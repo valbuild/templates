@@ -40,7 +40,8 @@ export type SurfaceToken =
   | "on-tint"
   | "highlight"
   | "highlight-tint"
-  | "on-highlight-tint";
+  | "on-highlight-tint"
+  | "raised";
 
 const ref = (r: Ref): TokenValue => ({ kind: "ref", ref: r });
 const ld = (light: Ref, dark: Ref): TokenValue => ({
@@ -69,6 +70,9 @@ const DEFAULT: Record<SurfaceToken, TokenValue> = {
   highlight: ld("accent-700", "accent-300"),
   "highlight-tint": ld("accent-100", "accent-900"),
   "on-highlight-tint": ld("accent-800", "accent-200"),
+  // A raised card: the page colour in light mode, where a shadow carries it,
+  // and a step lighter in dark mode, where a shadow cannot.
+  raised: ld("n-50", "n-900"),
 };
 
 export const SURFACES: Record<Surface, Record<SurfaceToken, TokenValue>> = {
@@ -78,6 +82,7 @@ export const SURFACES: Record<Surface, Record<SurfaceToken, TokenValue>> = {
     bg: ld("n-100", "n-900"),
     subtle: ld("n-200", "n-800"),
     border: ld("n-300", "n-700"),
+    raised: ld("n-50", "n-800"),
   },
   inverse: {
     bg: ld("n-950", "n-50"),
@@ -93,6 +98,7 @@ export const SURFACES: Record<Surface, Record<SurfaceToken, TokenValue>> = {
     highlight: ld("accent-300", "accent-700"),
     "highlight-tint": ld("accent-900", "accent-100"),
     "on-highlight-tint": ld("accent-200", "accent-800"),
+    raised: ld("n-900", "n-100"),
   },
   /*
    * The editor's exact brand colour, in both modes. Text is the one colour
@@ -115,6 +121,7 @@ export const SURFACES: Record<Surface, Record<SurfaceToken, TokenValue>> = {
     highlight: ref("on-brand"),
     "highlight-tint": ref("on-brand"),
     "on-highlight-tint": ref("brand"),
+    raised: mix("brand-shade", 14, "brand"),
   },
 };
 
@@ -128,6 +135,9 @@ export const TEXT_PAIRS: [SurfaceToken, SurfaceToken][] = [
   ["on-action", "action"],
   ["on-tint", "tint"],
   ["on-highlight-tint", "highlight-tint"],
+  ["fg", "raised"],
+  ["fg-muted", "raised"],
+  ["link", "raised"],
 ];
 
 function css(value: TokenValue): string {

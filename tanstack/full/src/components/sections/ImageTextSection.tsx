@@ -8,6 +8,7 @@ import { Media } from "../atoms/Media";
 
 export function ImageTextSection({
   image,
+  imageSide,
   title,
   text,
   surface,
@@ -15,7 +16,13 @@ export function ImageTextSection({
   return (
     <Section surface={surface}>
       <Grid columns={image ? 2 : 1} gap="lg" className="items-center">
-        {image && <Media media={{ type: "image", image }} aspect="landscape" />}
+        {image && (
+          <Media
+            media={{ type: "image", image }}
+            aspect="landscape"
+            className={imageSide === "right" ? "sm:order-last" : undefined}
+          />
+        )}
         <Stack gap="sm">
           <Heading level={2}>{title}</Heading>
           <Prose value={text} />

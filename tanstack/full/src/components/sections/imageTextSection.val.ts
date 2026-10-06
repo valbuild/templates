@@ -5,6 +5,11 @@ import { surfaceSchema } from "../base/surface.val";
 export const imageTextSection = s.object({
   type: s.literal("image-text"),
   image: s.image().nullable(),
+  imageSide: s
+    .enum("left", "right")
+    .describe(
+      "Which side the image is on, on a laptop. On a phone it is always above.",
+    ),
   surface: surfaceSchema,
   title: s.string(),
   text: proseSchema,

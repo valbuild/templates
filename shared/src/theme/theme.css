@@ -33,6 +33,7 @@
   --color-highlight: var(--highlight);
   --color-highlight-tint: var(--highlight-tint);
   --color-on-highlight-tint: var(--on-highlight-tint);
+  --color-raised: var(--raised);
   --font-heading: var(--theme-font-heading);
   --font-body: var(--theme-font-body);
   --radius-theme: var(--radius);
@@ -176,5 +177,6 @@ html {
   background-color: var(--subtle);
 }
 [data-card-style="raised"] .card {
+  background-color: var(--raised);
   box-shadow: var(--shadow-raised);
 }

@@ -56,6 +56,7 @@ export default c.define(
             },
           ],
           image: null,
+          imageSide: "left",
         },
       ],
     },
