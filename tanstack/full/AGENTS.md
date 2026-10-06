@@ -14,6 +14,12 @@ either here or in Val Studio at `/val`.
   beside, and its keys are the URLs that route serves.
 - `src/components/**/*.val.ts` — the schemas of the components a page is built
   from.
+- `src/media/*.val.ts` — the media libraries: every image (`images.val.ts`),
+  video (`videos.val.ts`), downloadable file (`files.val.ts`), icon and custom
+  font. A field never holds an upload of its own; it picks from a library with
+  `s.image(imagesVal)`, `s.video(videosVal)` or `s.file(filesVal)`, and stores
+  only `{ path }` — the size, type and default alt text are the library's. See
+  [src/media/README.md](src/media/README.md).
 
 ## Reading content
 

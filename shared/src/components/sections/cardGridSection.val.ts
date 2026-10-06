@@ -1,10 +1,11 @@
 import { s, type t } from "../../../val.config";
+import imagesVal from "../../media/images.val";
 import { linkSchema } from "../atoms/link.val";
 import { surfaceSchema } from "../base/surface.val";
 import { sectionHeaderFields } from "./sectionHeader.val";
 
 export const cardSchema = s.object({
-  image: s.image().nullable(),
+  image: s.image(imagesVal).nullable(),
   tag: s
     .string()
     .maxLength(24)

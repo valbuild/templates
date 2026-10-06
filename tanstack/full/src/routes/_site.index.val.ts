@@ -60,14 +60,8 @@ export default c.define(
             },
           ],
           background: {
-            type: "image",
-            image: {
-              path: "/public/val/images/hero-dusk.svg",
-              width: 2400,
-              height: 1200,
-              mimeType: "image/svg+xml",
-              alt: "Hills under a dusk sky",
-            },
+            type: "video",
+            video: { path: "/public/val/videos/dusk.mp4" },
           },
           surface: "default",
         },
@@ -79,30 +73,18 @@ export default c.define(
           columns: "3",
           cards: [
             {
-              image: {
-                path: "/public/val/images/card-local.svg",
-                width: 1200,
-                height: 900,
-                mimeType: "image/svg+xml",
-                alt: "Abstract shapes in blue",
-              },
+              image: { path: "/public/val/images/card-local.svg" },
               tag: "Local first",
               title: "Your content is in your repository",
               text: "Typed by schemas, reviewed in pull requests, and versioned with Git. No signup to start.",
               link: {
-                type: "external",
-                label: "How it works",
-                href: "https://val.build/docs",
+                type: "file",
+                label: "Download the guide (PDF)",
+                file: { path: "/public/val/files/getting-started.pdf" },
               },
             },
             {
-              image: {
-                path: "/public/val/images/card-visual.svg",
-                width: 1200,
-                height: 900,
-                mimeType: "image/svg+xml",
-                alt: "Abstract shapes in orange",
-              },
+              image: { path: "/public/val/images/card-visual.svg" },
               tag: "Visual editing",
               title: "Click the page to change it",
               text: "Editors change text and images on the page itself, and see the result before anyone else does.",
@@ -113,13 +95,7 @@ export default c.define(
               },
             },
             {
-              image: {
-                path: "/public/val/images/card-theme.svg",
-                width: 1200,
-                height: 900,
-                mimeType: "image/svg+xml",
-                alt: "Abstract shapes in green",
-              },
+              image: { path: "/public/val/images/card-theme.svg" },
               tag: "Themeable",
               title: "The look is content too",
               text: "Pick a preset, then change colours, fonts and shapes in the Studio. Text stays readable whatever you choose.",
@@ -134,13 +110,7 @@ export default c.define(
         },
         {
           type: "image-text",
-          image: {
-            path: "/public/val/images/coast.svg",
-            width: 1600,
-            height: 1000,
-            mimeType: "image/svg+xml",
-            alt: "A coastline in the morning",
-          },
+          image: { path: "/public/val/images/coast.svg" },
           imageSide: "right",
           surface: "muted",
           title: "How Val works",
@@ -173,43 +143,19 @@ export default c.define(
             "Upload an image, set its focal point, and it stays in frame however the layout crops it.",
           slides: [
             {
-              image: {
-                path: "/public/val/images/forest.svg",
-                width: 1600,
-                height: 1000,
-                mimeType: "image/svg+xml",
-                alt: "Green hills and a pale sun",
-              },
+              image: { path: "/public/val/images/forest.svg" },
               caption: "Morning, inland.",
             },
             {
-              image: {
-                path: "/public/val/images/desert.svg",
-                width: 1600,
-                height: 1000,
-                mimeType: "image/svg+xml",
-                alt: "Desert dunes in the afternoon",
-              },
+              image: { path: "/public/val/images/desert.svg" },
               caption: "Afternoon in the dunes.",
             },
             {
-              image: {
-                path: "/public/val/images/night.svg",
-                width: 1600,
-                height: 1000,
-                mimeType: "image/svg+xml",
-                alt: "Mountains under a starry sky",
-              },
+              image: { path: "/public/val/images/night.svg" },
               caption: "Night over the ridge.",
             },
             {
-              image: {
-                path: "/public/val/images/coast.svg",
-                width: 1600,
-                height: 1000,
-                mimeType: "image/svg+xml",
-                alt: "A coastline in the morning",
-              },
+              image: { path: "/public/val/images/coast.svg" },
               caption: "Back to the coast.",
             },
           ],

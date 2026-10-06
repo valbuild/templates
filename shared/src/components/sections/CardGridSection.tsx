@@ -9,6 +9,7 @@ import { Text } from "../typography/Text";
 import { TextLink } from "../typography/TextLink";
 import { Media } from "../atoms/Media";
 import { Tag } from "../atoms/Tag";
+import { hrefOf } from "../atoms/hrefOf";
 
 const COLUMNS: Record<CardGridSectionSchema["columns"], GridColumns> = {
   "2": 2,
@@ -49,7 +50,7 @@ export function CardGridSection({
                   </Text>
                 )}
                 {card.link && (
-                  <TextLink href={card.link.href} className="mt-auto pt-2">
+                  <TextLink href={hrefOf(card.link)} className="mt-auto pt-2">
                     {card.link.label} →
                   </TextLink>
                 )}

@@ -1,4 +1,4 @@
-import type { Image, ValEncodedString } from "../framework";
+import type { Image, ValEncodedString, Video } from "../framework";
 import type { MediaSchema } from "../components/atoms/media.val";
 import type { ProseSchema } from "../components/typography/prose.val";
 
@@ -45,6 +45,25 @@ export const portrait = sampleImage("portrait.svg", 900, 1200, "A portrait", {
   y: 0.4,
 });
 export const square = sampleImage("square.svg", 1000, 1000, "Shapes");
+
+/** The sample video from the video library (`src/media/videos.val.ts`). */
+export const dusk: Video = {
+  path: "/public/val/videos/dusk.mp4",
+  url: text("./val/videos/dusk.mp4"),
+  mimeType: "video/mp4",
+  width: 1280,
+  height: 640,
+  duration: 8,
+  alt: "Hills drifting past a setting sun",
+  poster: {
+    path: "/public/val/videos/dusk-poster.webp",
+    url: "./val/videos/dusk-poster.webp",
+    width: 1280,
+    height: 640,
+    mimeType: "image/webp",
+  },
+};
+export const duskMedia: MediaSchema = { type: "video", video: dusk };
 
 export const landscapeMedia: MediaSchema = { type: "image", image: landscape };
 export const portraitMedia: MediaSchema = { type: "image", image: portrait };

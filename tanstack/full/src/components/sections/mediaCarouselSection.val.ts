@@ -1,4 +1,5 @@
 import { s, type t } from "../../../val.config";
+import imagesVal from "../../media/images.val";
 import { surfaceSchema } from "../base/surface.val";
 import { sectionHeaderFields } from "./sectionHeader.val";
 
@@ -10,7 +11,7 @@ export const mediaCarouselSection = s.object({
     .array(
       s
         .object({
-          image: s.image(),
+          image: s.image(imagesVal),
           caption: s.string().maxLength(160).nullable(),
         })
         .preview(({ val }) => ({

@@ -1,10 +1,11 @@
 import { s, type t } from "../../../val.config";
+import imagesVal from "../../media/images.val";
 import { proseSchema } from "../typography/prose.val";
 import { surfaceSchema } from "../base/surface.val";
 
 export const imageTextSection = s.object({
   type: s.literal("image-text"),
-  image: s.image().nullable(),
+  image: s.image(imagesVal).nullable(),
   imageSide: s
     .enum("left", "right")
     .describe(

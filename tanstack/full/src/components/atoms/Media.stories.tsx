@@ -1,6 +1,10 @@
 import type { Meta, StoryObj } from "@storybook/react-vite";
 import { Media, type MediaAspect } from "./Media";
-import { landscapeMedia, portraitMedia } from "../../stories/fixtures";
+import {
+  duskMedia,
+  landscapeMedia,
+  portraitMedia,
+} from "../../stories/fixtures";
 
 const meta = {
   title: "Atoms/Media",
@@ -46,6 +50,16 @@ export const Portrait: Story = {
   args: { media: portraitMedia, aspect: "portrait" },
   render: (args) => (
     <div className="max-w-xs">
+      <Media {...args} />
+    </div>
+  ),
+};
+
+/** A video from the video library: muted and looping, a moving picture. */
+export const Video: Story = {
+  args: { media: duskMedia, aspect: "wide" },
+  render: (args) => (
+    <div className="max-w-2xl">
       <Media {...args} />
     </div>
   ),

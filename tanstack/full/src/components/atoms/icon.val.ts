@@ -1,7 +1,8 @@
 import { s, type t } from "../../../val.config";
+import iconsVal from "../../media/icons.val";
 
 /**
- * An icon is an SVG an editor uploads.
+ * An icon, picked from the icon library (`src/media/icons.val.ts`).
  *
  * It is drawn as a MASK, so it takes the colour of the text around it and
  * follows the theme and the surface — an uploaded icon is never the wrong
@@ -9,7 +10,7 @@ import { s, type t } from "../../../val.config";
  * (most icon sets), which is what an icon should be anyway.
  */
 export const iconSchema = s
-  .image({ accept: "image/svg+xml", dir: "/public/val/icons" })
+  .image(iconsVal)
   .describe("A single-colour SVG. It takes the colour of the text around it.");
 
 export type IconSchema = t.inferSchema<typeof iconSchema>;

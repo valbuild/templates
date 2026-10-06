@@ -7,6 +7,7 @@ import { CardGridSection } from "./CardGridSection";
 import { MediaCarouselSection } from "./MediaCarouselSection";
 import { AccordionSection } from "./AccordionSection";
 import {
+  duskMedia,
   landscape,
   landscapeMedia,
   portrait,
@@ -95,7 +96,10 @@ const buttons: HeroSectionSchema["buttons"] = [
   },
 ];
 
-/** With a background image: the text switches to light over a darkened image. */
+/**
+ * With a background video, from the video library: muted, looping, with the
+ * library's poster until it plays. The text switches to light over it.
+ */
 export const Hero: Story = {
   render: () => (
     <HeroSection
@@ -105,6 +109,21 @@ export const Hero: Story = {
       intro={text(
         "Everything on this page lives in your repository, and every word can be changed in Val Studio.",
       )}
+      buttons={buttons}
+      background={duskMedia}
+      surface="default"
+    />
+  ),
+};
+
+/** The same hero over an image. */
+export const HeroOverImage: Story = {
+  render: () => (
+    <HeroSection
+      type="hero"
+      eyebrow={text("Val + TanStack Start")}
+      title={text("Content as code, edited like a website")}
+      intro={null}
       buttons={buttons}
       background={landscapeMedia}
       surface="default"

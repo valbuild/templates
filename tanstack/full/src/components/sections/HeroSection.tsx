@@ -3,6 +3,7 @@ import { SectionHeader } from "../base/SectionHeader";
 import { Container } from "../base/Container";
 import { Cluster } from "../base/Cluster";
 import { LinkButton } from "../atoms/LinkButton";
+import { hrefOf } from "../atoms/hrefOf";
 import { Media } from "../atoms/Media";
 
 export function HeroSection({
@@ -48,7 +49,7 @@ export function HeroSection({
               {buttons.map((button, index) => (
                 <LinkButton
                   key={index}
-                  href={button.href}
+                  href={hrefOf(button)}
                   variant={button.variant}
                   size="lg"
                 >

@@ -6,6 +6,7 @@ import { Grid } from "../base/Grid";
 import { Stack } from "../base/Stack";
 import { Cluster } from "../base/Cluster";
 import { LinkButton } from "../atoms/LinkButton";
+import { hrefOf } from "../atoms/hrefOf";
 
 export function TitleTextSection({
   title,
@@ -23,7 +24,7 @@ export function TitleTextSection({
             {buttons.map((button, index) => (
               <LinkButton
                 key={index}
-                href={button.href}
+                href={hrefOf(button)}
                 variant={button.variant}
               >
                 {button.label}

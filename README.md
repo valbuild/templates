@@ -58,6 +58,12 @@ component imports those from there and never from `@tanstack/*`, `next/*` or
 layout, the header and footer, the config files and `package.json` are the
 template's own.
 
+So are the media libraries in `src/media/` (`images.val.ts`, `videos.val.ts`,
+`files.val.ts`, …). Shared components import them by path — every media field
+is `s.image(imagesVal)` and the like — but their entries are the template's
+content, so each template keeps its own and the sync leaves them alone. A
+template that uses the shared components must have all five.
+
 ## Adding a template
 
 1. Make the folder a complete project (copying the closest template is

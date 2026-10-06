@@ -1,4 +1,5 @@
 import { s, c, type t } from "../../val.config";
+import fontsVal from "../media/fonts.val";
 
 /*
  * The site's look, as content.
@@ -40,7 +41,7 @@ const fontSchema = s.discriminatedUnion(
       .array(
         s.object({
           file: s
-            .file()
+            .file(fontsVal)
             .validate((file) =>
               file.path.toLowerCase().endsWith(".woff2")
                 ? false
