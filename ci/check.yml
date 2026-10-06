@@ -1,0 +1,81 @@
+# Move to .github/workflows/check.yml to enable. See README.md.
+name: Check
+
+on:
+  push:
+    branches: [main]
+  pull_request:
+
+permissions:
+  contents: read
+
+jobs:
+  sync:
+    name: shared/ is in sync
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+      - uses: actions/setup-node@v4
+        with:
+          node-version: 22
+      - run: node scripts/sync.mjs --check
+
+  tanstack-full:
+    runs-on: ubuntu-latest
+    defaults:
+      run:
+        working-directory: tanstack/full
+    steps:
+      - uses: actions/checkout@v4
+      - uses: pnpm/action-setup@v4
+        with:
+          version: 10
+      - uses: actions/setup-node@v4
+        with:
+          node-version: 22
+          cache: pnpm
+          cache-dependency-path: tanstack/full/pnpm-lock.yaml
+      - run: pnpm install --frozen-lockfile
+      - run: pnpm run typecheck
+      - run: pnpm run lint
+      - run: pnpm exec prettier --check .
+      - run: pnpm test
+      - run: pnpm run build
+      - run: pnpm exec val validate
+      - run: pnpm run build-storybook
+
+  tanstack-starter:
+    runs-on: ubuntu-latest
+    defaults:
+      run:
+        working-directory: tanstack/starter
+    steps:
+      - uses: actions/checkout@v4
+      - uses: pnpm/action-setup@v4
+        with:
+          version: 10
+      - uses: actions/setup-node@v4
+        with:
+          node-version: 22
+          cache: pnpm
+          cache-dependency-path: tanstack/starter/pnpm-lock.yaml
+      - run: pnpm install --frozen-lockfile
+      - run: pnpm run typecheck
+      - run: pnpm run build
+      - run: pnpm exec val validate
+
+  nextjs-starter:
+    runs-on: ubuntu-latest
+    defaults:
+      run:
+        working-directory: nextjs/starter
+    steps:
+      - uses: actions/checkout@v4
+      - uses: actions/setup-node@v4
+        with:
+          node-version: 22
+          cache: npm
+          cache-dependency-path: nextjs/starter/package-lock.json
+      - run: npm ci
+      - run: npm run build
+      - run: npx val validate

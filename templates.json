@@ -1,0 +1,17 @@
+{
+  "$comment": "Which parts of shared/ each template is made of. Paths are relative to both shared/ and the template, and are files or whole directories. See README.md.",
+  "templates": {
+    "tanstack/full": [
+      "src/theme",
+      "src/components/typography",
+      "src/components/atoms",
+      "src/components/base",
+      "src/components/sections",
+      "src/styleguide",
+      "src/stories",
+      "src/utils/cn.ts",
+      "src/utils/href.ts",
+      "public/samples"
+    ]
+  }
+}
