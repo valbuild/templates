@@ -6,3 +6,4 @@ dist
 .val
 src/routeTree.gen.ts
 storybook-static
+pnpm-lock.yaml

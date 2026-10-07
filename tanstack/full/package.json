@@ -38,6 +38,7 @@
   },
   "devDependencies": {
     "@eslint/js": "^10.0.1",
+    "@storybook/react": "^10.6.1",
     "@storybook/react-vite": "^10.6.1",
     "@tanstack/devtools-vite": "^0.8.5",
     "@tanstack/router-cli": "^1.167.40",

@@ -1,4 +1,4 @@
-import type { Meta, StoryObj } from "@storybook/react-vite";
+import type { Meta, StoryObj } from "@storybook/react";
 import { TitleTextSection } from "./TitleTextSection";
 import { ImageTextSection } from "./ImageTextSection";
 import { HeroSection } from "./HeroSection";
@@ -104,7 +104,7 @@ export const Hero: Story = {
   render: () => (
     <HeroSection
       type="hero"
-      eyebrow={text("Val + TanStack Start")}
+      eyebrow={text("Val Build")}
       title={text("Content as code, edited like a website")}
       intro={text(
         "Everything on this page lives in your repository, and every word can be changed in Val Studio.",
@@ -121,7 +121,7 @@ export const HeroOverImage: Story = {
   render: () => (
     <HeroSection
       type="hero"
-      eyebrow={text("Val + TanStack Start")}
+      eyebrow={text("Val Build")}
       title={text("Content as code, edited like a website")}
       intro={null}
       buttons={buttons}

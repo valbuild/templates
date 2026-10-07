@@ -1,5 +1,4 @@
-import type { t } from "@valbuild/tanstack";
-import { s } from "../../../val.config";
+import { s, type t } from "../../../val.config";
 import { heroSection } from "./heroSection.val";
 import { cardGridSection } from "./cardGridSection.val";
 import { imageTextSection } from "./imageTextSection.val";
