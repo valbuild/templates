@@ -46,10 +46,18 @@ and what they return is click-to-editable on the page.
   `/val` page, or the Studio loads without your content.
 - Strings read through Val carry an invisible edit tag. Use `val.raw()`
   wherever a string must be exact: a URL, a `key`, a comparison, metadata.
+- Val's content tools are served over MCP at `/api/mcp`
+  (`src/app/api/mcp/route.ts`, `src/val/mcp.ts`). In local development an
+  agent can read, validate and edit content there; a production build refuses
+  unless the project is connected to Val Build and OAuth is configured — see
+  README.md.
+- There is no CSS framework: `src/app/globals.css` holds the few global rules,
+  and the example page styles itself inline. Add whatever styling you prefer.
 - Run `npm run validate` after changing content. It type-checks the content
   against the schemas and fixes what it can.
 
 ## Removing the example page
 
 Delete `src/app/(main)/page.tsx` and `src/content/home.val.ts`, and remove the
-`home.val` line from `val.modules.ts`. Everything left is required to run Val.
+`home.val` line from `val.modules.ts`. Everything left is Val's own setup: the
+Studio, the API and the MCP endpoint.

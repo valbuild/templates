@@ -18,17 +18,20 @@ TanStack Start is the primary one: a feature lands there first.
 
 The two Full templates are the same components, theme, sections and stories —
 copied from `shared/` — on different frameworks; what differs is routing,
-layouts and `src/framework.tsx`. Both serve Val's content tools over MCP at
-`/api/mcp`, which `npm create @valbuild` can leave out: the files are
+layouts and `src/framework.tsx`.
+
+The Minimal templates share nothing from `shared/`. Each has Val fully set up
+on its framework — the Studio, the API and MCP — and one example page that its
+README explains how to delete, and nothing a developer would have to undo: no
+CSS framework, no components, no theme.
+
+Every template serves Val's content tools over MCP at `/api/mcp`, which
+`npm create @valbuild` can leave out. The files are
 `src/routes/api/mcp.ts`, `src/routes/[.]well-known.oauth-protected-resource.ts`
 and `src/val/mcp*.server.ts` in TanStack, and `src/app/api/mcp/route.ts`,
 `src/app/.well-known/oauth-protected-resource/route.ts` and `src/val/mcp*.ts` in
-Next.js, with the README section between `<!-- val:mcp:start -->` and
+Next.js, plus the README section between `<!-- val:mcp:start -->` and
 `<!-- val:mcp:end -->`.
-
-The Minimal templates share nothing from `shared/`: each is the smallest
-project that runs Val on its framework, plus one example page that its README
-explains how to delete.
 
 The old starters (`valbuild/template-tanstack-starter` and
 `valbuild/template-nextjs-starter`) were brought in with their history and then

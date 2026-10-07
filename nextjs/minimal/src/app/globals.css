@@ -1,16 +1,15 @@
-@import "tailwindcss";
-
-/* Black and white, in light and in dark: the system's own page colours. */
+/*
+ * The site's global styles: black and white, in light and in dark — the
+ * system's own page colours — and the system's font. Replace freely.
+ */
 :root {
   color-scheme: light dark;
 }
 
-@layer base {
-  body {
-    margin: 0;
-    background: Canvas;
-    color: CanvasText;
-    font-family: ui-sans-serif, system-ui, sans-serif;
-    -webkit-font-smoothing: antialiased;
-  }
+body {
+  margin: 0;
+  background: Canvas;
+  color: CanvasText;
+  font-family: ui-sans-serif, system-ui, sans-serif;
+  -webkit-font-smoothing: antialiased;
 }

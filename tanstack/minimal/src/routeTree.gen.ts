@@ -11,7 +11,9 @@
 import { Route as rootRouteImport } from './routes/__root'
 import { Route as SiteRouteImport } from './routes/_site'
 import { Route as ValRouteRouteImport } from './routes/val/route'
+import { Route as DotwellKnownOauthProtectedResourceRouteImport } from './routes/[.]well-known.oauth-protected-resource'
 import { Route as SiteIndexRouteImport } from './routes/_site.index'
+import { Route as ApiMcpRouteImport } from './routes/api/mcp'
 import { Route as ValIndexRouteImport } from './routes/val/index'
 import { Route as ValSplatRouteImport } from './routes/val/$'
 import { Route as ApiValSplatRouteImport } from './routes/api/val.$'
@@ -25,10 +27,21 @@ const ValRouteRoute = ValRouteRouteImport.update({
   path: '/val',
   getParentRoute: () => rootRouteImport,
 } as any)
+const DotwellKnownOauthProtectedResourceRoute =
+  DotwellKnownOauthProtectedResourceRouteImport.update({
+    id: '/.well-known/oauth-protected-resource',
+    path: '/.well-known/oauth-protected-resource',
+    getParentRoute: () => rootRouteImport,
+  } as any)
 const SiteIndexRoute = SiteIndexRouteImport.update({
   id: '/',
   path: '/',
   getParentRoute: () => SiteRoute,
+} as any)
+const ApiMcpRoute = ApiMcpRouteImport.update({
+  id: '/api/mcp',
+  path: '/api/mcp',
+  getParentRoute: () => rootRouteImport,
 } as any)
 const ValIndexRoute = ValIndexRouteImport.update({
   id: '/',
@@ -49,11 +62,15 @@ const ApiValSplatRoute = ApiValSplatRouteImport.update({
 export interface FileRoutesByFullPath {
   '/val': typeof ValRouteRouteWithChildren
   '/': typeof SiteIndexRoute
+  '/.well-known/oauth-protected-resource': typeof DotwellKnownOauthProtectedResourceRoute
+  '/api/mcp': typeof ApiMcpRoute
   '/val/$': typeof ValSplatRoute
   '/val/': typeof ValIndexRoute
   '/api/val/$': typeof ApiValSplatRoute
 }
 export interface FileRoutesByTo {
+  '/.well-known/oauth-protected-resource': typeof DotwellKnownOauthProtectedResourceRoute
+  '/api/mcp': typeof ApiMcpRoute
   '/val/$': typeof ValSplatRoute
   '/': typeof SiteIndexRoute
   '/val': typeof ValIndexRoute
@@ -63,6 +80,8 @@ export interface FileRoutesById {
   __root__: typeof rootRouteImport
   '/val': typeof ValRouteRouteWithChildren
   '/_site': typeof SiteRouteWithChildren
+  '/.well-known/oauth-protected-resource': typeof DotwellKnownOauthProtectedResourceRoute
+  '/api/mcp': typeof ApiMcpRoute
   '/val/$': typeof ValSplatRoute
   '/_site/': typeof SiteIndexRoute
   '/val/': typeof ValIndexRoute
@@ -70,13 +89,28 @@ export interface FileRoutesById {
 }
 export interface FileRouteTypes {
   fileRoutesByFullPath: FileRoutesByFullPath
-  fullPaths: '/val' | '/' | '/val/$' | '/val/' | '/api/val/$'
+  fullPaths:
+    | '/val'
+    | '/'
+    | '/.well-known/oauth-protected-resource'
+    | '/api/mcp'
+    | '/val/$'
+    | '/val/'
+    | '/api/val/$'
   fileRoutesByTo: FileRoutesByTo
-  to: '/val/$' | '/' | '/val' | '/api/val/$'
+  to:
+    | '/.well-known/oauth-protected-resource'
+    | '/api/mcp'
+    | '/val/$'
+    | '/'
+    | '/val'
+    | '/api/val/$'
   id:
     | '__root__'
     | '/val'
     | '/_site'
+    | '/.well-known/oauth-protected-resource'
+    | '/api/mcp'
     | '/val/$'
     | '/_site/'
     | '/val/'
@@ -86,6 +120,8 @@ export interface FileRouteTypes {
 export interface RootRouteChildren {
   ValRouteRoute: typeof ValRouteRouteWithChildren
   SiteRoute: typeof SiteRouteWithChildren
+  DotwellKnownOauthProtectedResourceRoute: typeof DotwellKnownOauthProtectedResourceRoute
+  ApiMcpRoute: typeof ApiMcpRoute
   ApiValSplatRoute: typeof ApiValSplatRoute
 }
 
@@ -105,12 +141,26 @@ declare module '@tanstack/react-router' {
       preLoaderRoute: typeof ValRouteRouteImport
       parentRoute: typeof rootRouteImport
     }
+    '/.well-known/oauth-protected-resource': {
+      id: '/.well-known/oauth-protected-resource'
+      path: '/.well-known/oauth-protected-resource'
+      fullPath: '/.well-known/oauth-protected-resource'
+      preLoaderRoute: typeof DotwellKnownOauthProtectedResourceRouteImport
+      parentRoute: typeof rootRouteImport
+    }
     '/_site/': {
       id: '/_site/'
       path: '/'
       fullPath: '/'
       preLoaderRoute: typeof SiteIndexRouteImport
       parentRoute: typeof SiteRoute
+    }
+    '/api/mcp': {
+      id: '/api/mcp'
+      path: '/api/mcp'
+      fullPath: '/api/mcp'
+      preLoaderRoute: typeof ApiMcpRouteImport
+      parentRoute: typeof rootRouteImport
     }
     '/val/': {
       id: '/val/'
@@ -163,6 +213,9 @@ const SiteRouteWithChildren = SiteRoute._addFileChildren(SiteRouteChildren)
 const rootRouteChildren: RootRouteChildren = {
   ValRouteRoute: ValRouteRouteWithChildren,
   SiteRoute: SiteRouteWithChildren,
+  DotwellKnownOauthProtectedResourceRoute:
+    DotwellKnownOauthProtectedResourceRoute,
+  ApiMcpRoute: ApiMcpRoute,
   ApiValSplatRoute: ApiValSplatRoute,
 }
 export const routeTree = rootRouteImport
