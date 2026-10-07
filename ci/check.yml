@@ -65,3 +65,49 @@ jobs:
       - run: pnpm exec prettier --check .
       - run: pnpm run build
       - run: pnpm exec val validate
+
+  nextjs-full:
+    runs-on: ubuntu-latest
+    defaults:
+      run:
+        working-directory: nextjs/full
+    steps:
+      - uses: actions/checkout@v4
+      - uses: pnpm/action-setup@v4
+        with:
+          version: 10
+      - uses: actions/setup-node@v4
+        with:
+          node-version: 22
+          cache: pnpm
+          cache-dependency-path: nextjs/full/pnpm-lock.yaml
+      - run: pnpm install --frozen-lockfile
+      - run: pnpm run typecheck
+      - run: pnpm run lint
+      - run: pnpm exec prettier --check .
+      - run: pnpm test
+      - run: pnpm run build
+      - run: pnpm exec val validate
+      - run: pnpm run build-storybook
+
+  nextjs-minimal:
+    runs-on: ubuntu-latest
+    defaults:
+      run:
+        working-directory: nextjs/minimal
+    steps:
+      - uses: actions/checkout@v4
+      - uses: pnpm/action-setup@v4
+        with:
+          version: 10
+      - uses: actions/setup-node@v4
+        with:
+          node-version: 22
+          cache: pnpm
+          cache-dependency-path: nextjs/minimal/pnpm-lock.yaml
+      - run: pnpm install --frozen-lockfile
+      - run: pnpm run typecheck
+      - run: pnpm run lint
+      - run: pnpm exec prettier --check .
+      - run: pnpm run build
+      - run: pnpm exec val validate

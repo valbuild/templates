@@ -14,11 +14,17 @@ The rules that are easy to break:
   `src/framework.tsx`.
 - **Each template is its own project**, with its own lockfile and its own
   `AGENTS.md` that ships to users. Run its checks from its folder.
+- **A change to `shared/` lands in both Full templates** (TanStack and Next.js).
+  Check it in both. A shared component with state needs `"use client"` for
+  Next.js; one that imports `next/*` or `@tanstack/*` breaks the other.
 
-Before pushing a change to `tanstack/full`, from that folder:
+Before pushing a change to `shared/` or to a Full template, from **both**
+`tanstack/full` and `nextjs/full`:
 
 ```bash
 pnpm run typecheck && pnpm run lint && pnpm exec prettier --check . \
   && pnpm test && pnpm run build && pnpm exec val validate \
   && pnpm run build-storybook
 ```
+
+For a Minimal template, the same without `test` and `build-storybook`.

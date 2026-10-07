@@ -1,0 +1,182 @@
+/*
+ * The static half of the theme. `themeCss.ts` writes the variables (colours,
+ * fonts, sizes) from content; this file says what they MEAN, and it never
+ * changes with content.
+ *
+ * Imported once, from `src/styles.css`.
+ */
+
+@import "@fontsource-variable/inter";
+@import "@fontsource-variable/plus-jakarta-sans";
+@import "@fontsource-variable/archivo";
+@import "@fontsource-variable/fraunces";
+@import "@fontsource-variable/source-serif-4";
+
+/*
+ * Tailwind utilities for the tokens: `bg-bg`, `text-fg`, `text-fg-muted`,
+ * `border-border`, `bg-subtle`, `text-link`, `font-heading`, `rounded-theme`…
+ *
+ * `inline` so a utility reads the variable where it is USED — inside a brand
+ * section `bg-bg` is the brand colour, because the section re-declares `--bg`.
+ */
+@theme inline {
+  --color-bg: var(--bg);
+  --color-fg: var(--fg);
+  --color-fg-muted: var(--fg-muted);
+  --color-border: var(--border);
+  --color-subtle: var(--subtle);
+  --color-link: var(--link);
+  --color-action: var(--action);
+  --color-on-action: var(--on-action);
+  --color-tint: var(--tint);
+  --color-on-tint: var(--on-tint);
+  --color-highlight: var(--highlight);
+  --color-highlight-tint: var(--highlight-tint);
+  --color-on-highlight-tint: var(--on-highlight-tint);
+  --color-raised: var(--raised);
+  --font-heading: var(--theme-font-heading);
+  --font-body: var(--theme-font-body);
+  --radius-theme: var(--radius);
+  --radius-theme-lg: var(--radius-lg);
+  --spacing-section: var(--space-section);
+  --spacing-gap: var(--space-gap);
+}
+
+/* ------------------------------------------------------------------------
+ * Light and dark
+ *
+ * `themeCss` sets `color-scheme` on :root from the theme's `mode` ("light
+ * dark" for system). A visitor's own choice, made with the header toggle and
+ * applied before paint by the script in `__root.tsx`, is `data-theme` on
+ * <html> and wins over it.
+ *
+ * Every surface colour is `light-dark(<light>, <dark>)`, so switching mode is
+ * the browser re-reading `color-scheme` and nothing else: no class on every
+ * element, no second set of variables, no flash.
+ * --------------------------------------------------------------------- */
+
+:root[data-theme="light"] {
+  color-scheme: light;
+}
+:root[data-theme="dark"] {
+  color-scheme: dark;
+}
+
+/*
+ * Surfaces — what a colour MEANS on a given background — are in
+ * `surfaces.ts`, and written out at runtime with the rest of the theme. Not
+ * here: they use `light-dark()`, which the production CSS build would rewrite
+ * into a polyfill that never switches on. See the top of `surfaces.ts`.
+ */
+
+html {
+  background-color: var(--bg);
+  color: var(--fg);
+  font-family: var(--theme-font-body);
+  font-size: 100%;
+  line-height: 1.6;
+}
+
+[data-surface] {
+  background-color: var(--bg);
+  color: var(--fg);
+}
+
+/* ------------------------------------------------------------------------
+ * Atoms: the choices that are more than one value
+ * --------------------------------------------------------------------- */
+
+.button {
+  border-radius: var(--button-radius);
+  text-transform: var(--button-case);
+  letter-spacing: var(--button-tracking);
+  border: 1.5px solid transparent;
+}
+
+/* solid: a fill of the action colour */
+.button[data-variant="primary"] {
+  background-color: var(--action);
+  color: var(--on-action);
+}
+.button[data-variant="primary"]:hover {
+  background-color: color-mix(in oklab, var(--action) 88%, var(--fg));
+}
+.button[data-variant="secondary"] {
+  border-color: var(--border);
+  color: var(--fg);
+}
+.button[data-variant="secondary"]:hover {
+  background-color: var(--subtle);
+}
+
+/* outline: a hairline in the text colour, filled on hover */
+[data-button-style="outline"] .button[data-variant="primary"] {
+  background-color: transparent;
+  border-color: var(--fg);
+  color: var(--fg);
+}
+[data-button-style="outline"] .button[data-variant="primary"]:hover {
+  background-color: var(--fg);
+  color: var(--bg);
+}
+[data-button-style="outline"] .button[data-variant="secondary"] {
+  border-color: transparent;
+  text-decoration: underline;
+  text-underline-offset: 0.25em;
+}
+
+/* soft: a tint of the action colour */
+[data-button-style="soft"] .button[data-variant="primary"] {
+  background-color: var(--tint);
+  color: var(--on-tint);
+}
+[data-button-style="soft"] .button[data-variant="primary"]:hover {
+  background-color: color-mix(in oklab, var(--tint) 80%, var(--on-tint));
+}
+[data-button-style="soft"] .button[data-variant="secondary"] {
+  border-color: transparent;
+  color: var(--fg-muted);
+}
+
+.text-link {
+  color: var(--link);
+  text-decoration-line: underline;
+  text-decoration-thickness: 1px;
+  text-underline-offset: 0.2em;
+}
+.text-link:hover {
+  text-decoration-thickness: 2px;
+}
+[data-link-underline="hover"] .text-link {
+  text-decoration-line: none;
+}
+[data-link-underline="hover"] .text-link:hover {
+  text-decoration-line: underline;
+}
+[data-link-underline="never"] .text-link {
+  text-decoration-line: none;
+  font-weight: 600;
+}
+[data-link-underline="never"] .text-link:hover {
+  color: var(--fg);
+}
+
+/* ------------------------------------------------------------------------
+ * Base
+ * --------------------------------------------------------------------- */
+
+.card {
+  border-radius: var(--radius-lg);
+  background-color: var(--bg);
+  overflow: hidden;
+}
+[data-card-style="outlined"] .card {
+  border: 1px solid var(--border);
+}
+[data-card-style="flat"] .card {
+  background-color: var(--subtle);
+}
+[data-card-style="raised"] .card {
+  background-color: var(--raised);
+  box-shadow: var(--shadow-raised);
+}

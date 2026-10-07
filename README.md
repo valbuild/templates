@@ -4,21 +4,31 @@ Every template that `npm create @valbuild` can make, in one repository, so they
 can share code.
 
 ```
-tanstack/full/       the Full template: a themeable design system + sections
-tanstack/minimal/    the Minimal template: Val wired in, one black-and-white page
+tanstack/full/       Full on TanStack Start: a themeable design system + sections
+tanstack/minimal/    Minimal on TanStack Start: Val wired in, one black-and-white page
+nextjs/full/         Full on Next.js (App Router), with the same components
+nextjs/minimal/      Minimal on Next.js
 shared/              code that more than one template is made of
 templates.json       which parts of shared/ each template uses
 scripts/sync.mjs     copies shared/ into the templates
 ```
 
-Planned next to `tanstack/full` and `tanstack/minimal`: `blog` (one front page
-+ blog posts) and `docs`. Every template is TanStack Start; there are no
-Next.js templates. The old starters (`valbuild/template-tanstack-starter` and
-`valbuild/template-nextjs-starter`) were brought in with their history and
-then removed, so `git log` still has them.
+Planned: `blog` (one front page + blog posts) and `docs`, on both frameworks.
+TanStack Start is the primary one: a feature lands there first.
 
-`tanstack/minimal` shares nothing from `shared/`: it is the smallest project
-that runs Val, plus one example page that its README explains how to delete.
+The two Full templates are the same components, theme, sections and stories —
+copied from `shared/` — on different frameworks; what differs is routing,
+layouts and `src/framework.tsx`. The Next.js one also serves Val's MCP tools at
+`/api/mcp`, which `npm create @valbuild` can leave out.
+
+The Minimal templates share nothing from `shared/`: each is the smallest
+project that runs Val on its framework, plus one example page that its README
+explains how to delete.
+
+The old starters (`valbuild/template-tanstack-starter` and
+`valbuild/template-nextjs-starter`) were brought in with their history and then
+replaced, so `git log` still has them. The Next.js templates were built from
+the old Next.js starter's wiring.
 
 ## Every template is complete on its own
 
@@ -58,9 +68,13 @@ cd ../.. && node scripts/sync.mjs --pull tanstack/full && node scripts/sync.mjs
 Shared code is the same file in every template. Everything a component needs
 from the framework comes through one per-template file, `src/framework.tsx`:
 `RouterLink`, `ValImage`, `ValRichText`, `ValVideo` and Val's types. A shared
-component imports those from there and never from `@tanstack/*` or
-`@valbuild/tanstack` directly, which keeps the components free of the router
-and of Val's packages. That file, the routes, the
+component imports those from there and never from `@tanstack/*`, `next/*`,
+`@valbuild/tanstack` or `@valbuild/next` directly. That is what lets the Full
+templates on two frameworks be the same files.
+
+Shared components are Server Components unless they need state: a shared
+component with `useState` or an event handler starts with `"use client"`,
+which TanStack Start ignores and Next.js needs. That file, the routes, the
 layout, the header and footer, the config files and `package.json` are the
 template's own.
 
