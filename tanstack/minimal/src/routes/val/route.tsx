@@ -15,6 +15,24 @@ import valModules from "../../../val.modules";
  * overlay are not wrapped around the editor.
  */
 export const Route = createFileRoute("/val")({
+  /*
+   * The Studio's own page: nothing of the site's (see `__root.tsx`), and the
+   * Studio's background from the very first frame. The Studio paints a dark
+   * loading screen while it starts; without this the document around it is
+   * the browser's white, which shows as a white border and a flash.
+   *
+   * The colour is the Studio's loading screen's, and matches
+   * `defaultTheme: "dark"` in `val.config.ts` — change both together.
+   */
+  head: () => ({
+    meta: [{ title: "Val Studio" }],
+    styles: [
+      {
+        children:
+          "html,body{margin:0;min-height:100%;background:#08080a;color-scheme:dark}",
+      },
+    ],
+  }),
   component: ValStudio,
 });
 

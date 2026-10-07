@@ -13,6 +13,15 @@ import { useVal } from "../val/val.hooks";
 import themeVal from "../theme/theme.val";
 import { resolveTheme } from "../theme/resolveTheme";
 import { ThemeRoot } from "../theme/ThemeRoot";
+import appCss from "../styles.css?url";
+
+/*
+ * A visitor's own light/dark choice, applied before the first paint so the
+ * page never flashes the other mode. `data-theme` on <html> overrides the
+ * site's default, which `theme.val.ts` sets; no stored choice means the
+ * default stands. `ThemeToggle` writes the same key.
+ */
+const THEME_INIT_SCRIPT = `(function(){try{var m=window.localStorage.getItem('theme');if(m==='light'||m==='dark'){document.documentElement.setAttribute('data-theme',m)}}catch(e){}})();`;
 
 /**
  * The draft this request renders, when an editor is previewing; `null` for
@@ -35,6 +44,16 @@ const getValDraft = createServerFn().handler(() => fetchValDraft());
  * keeps the header, the footer and the Val overlay off `/val`.
  */
 export const Route = createFileRoute("/_site")({
+  /*
+   * The site's stylesheet and theme script belong to the site's pages, not
+   * to `__root`: that is the shell for Val Studio too, which must not inherit
+   * the site's fonts, line height or colour scheme. Both are in <head> on the
+   * server render, so the first paint is already styled.
+   */
+  head: () => ({
+    links: [{ rel: "stylesheet", href: appCss }],
+    scripts: [{ children: THEME_INIT_SCRIPT }],
+  }),
   /*
    * On the server only. The draft is for the render that has no other way to
    * get it -- the first one, and the browser's hydration of it, which reuses

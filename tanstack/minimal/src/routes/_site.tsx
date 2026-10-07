@@ -5,6 +5,7 @@ import { ValModulesClient, ValProvider } from "@valbuild/tanstack";
 import { config } from "../../val.config";
 import valModules from "../../val.modules";
 import { fetchValDraft } from "../val/val.server";
+import appCss from "../styles.css?url";
 
 /**
  * The draft this request renders, when an editor is previewing; `null` for
@@ -24,6 +25,15 @@ const getValDraft = createServerFn().handler(() => fetchValDraft());
  * keeping it out of `__root` is what keeps the Val overlay off `/val`.
  */
 export const Route = createFileRoute("/_site")({
+  /*
+   * The site's stylesheet belongs to the site's pages, not to `__root`: that
+   * is the shell for Val Studio too, which must not inherit the site's fonts
+   * or colour scheme. It is in <head> on the server render, so the first
+   * paint is already styled.
+   */
+  head: () => ({
+    links: [{ rel: "stylesheet", href: appCss }],
+  }),
   /*
    * On the server only. The draft is for the render that has no other way to
    * get it -- the first one, and the browser's hydration of it, which reuses
