@@ -12,7 +12,8 @@
  * - each template's folder exists, and its icon and screenshots do;
  * - every path a feature removes exists, and stays inside the template;
  * - every dependency it removes is one the template declares;
- * - every doc it cuts has exactly one pair of `val:<feature>` markers;
+ * - every doc it cuts has exactly one pair of `val:<feature>` markers, and no
+ *   Markdown file mentions MCP outside them;
  * - the script it regenerates with exists, and so do the files it rewrites;
  * - and, the one that matters most, nothing LEFT after a feature is removed
  *   still imports what was removed — a file or a dependency. That is the
@@ -68,6 +69,23 @@ function sourceFiles(dir, relative = "") {
     if (entry.isDirectory()) {
       out.push(...sourceFiles(dir, child));
     } else if (SOURCE_EXTENSIONS.includes(path.extname(entry.name))) {
+      out.push(child);
+    }
+  }
+  return out;
+}
+
+/** Every Markdown file under `dir`, relative to it. */
+function markdownFiles(dir, relative = "") {
+  const out = [];
+  for (const entry of fs.readdirSync(path.join(dir, relative), {
+    withFileTypes: true,
+  })) {
+    if (IGNORED_DIRS.has(entry.name)) continue;
+    const child = relative ? `${relative}/${entry.name}` : entry.name;
+    if (entry.isDirectory()) {
+      out.push(...markdownFiles(dir, child));
+    } else if (entry.name.endsWith(".md")) {
       out.push(child);
     }
   }
@@ -224,6 +242,35 @@ for (const template of catalog.templates ?? []) {
         fail(
           where,
           `mcp: ${doc} needs exactly one val:mcp:start, then one val:mcp:end`,
+        );
+      }
+    }
+  }
+  if (mcp) {
+    // What a project reads after MCP is declined: every Markdown file, with
+    // the marked sections cut out. A mention left outside them documents an
+    // endpoint the project does not have.
+    const removedNames = (mcp.paths ?? []).map((entry) => entry);
+    for (const doc of markdownFiles(dir)) {
+      const text = fs.readFileSync(path.join(dir, doc), "utf8");
+      const start = text.indexOf("<!-- val:mcp:start -->");
+      const end = text.indexOf("<!-- val:mcp:end -->");
+      const outside =
+        start === -1 || end === -1
+          ? text
+          : text.slice(0, start) +
+            text.slice(end + "<!-- val:mcp:end -->".length);
+      const mention =
+        /\bMCP\b|\/api\/mcp/.exec(outside)?.[0] ??
+        removedNames.find((name) => outside.includes(name));
+      if (mention !== undefined) {
+        fail(
+          where,
+          `mcp: ${doc} mentions ${JSON.stringify(mention)} outside a val:mcp section, so it stays when MCP is declined. ${
+            (mcp.docs ?? []).includes(doc)
+              ? "Move it into the section."
+              : "List the file in features.mcp.docs and mark the mention, or reword it."
+          }`,
         );
       }
     }

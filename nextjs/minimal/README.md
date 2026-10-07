@@ -3,10 +3,9 @@
 A [Val Build](https://val.build) site on [Next.js](https://nextjs.org) (App
 Router), bootstrapped with `npm create @valbuild` (or `pnpm create @valbuild`).
 
-This is the **minimal** template: Val fully wired into Next.js — the Studio,
-the API, and content tools for coding agents over MCP — and one plain
-black-and-white page. Nothing else: no CSS framework, no design system, no
-components, no theme. Bring your own.
+This is the **minimal** template: Val fully wired into Next.js — the Studio
+and the API — and one plain black-and-white page. Nothing else: no CSS
+framework, no design system, no components, no theme. Bring your own.
 Start here when you want to build your own; start from the **Full** template
 when you want a site that is ready to edit.
 
@@ -32,8 +31,8 @@ the text in `src/content/home.val.ts`, or in the Studio, and the page follows.
 ## Starting from nothing
 
 The example page is the only thing here that Val does not need. Remove it and
-what is left is a clean Next.js project with Val fully set up — the Studio, the
-API and the MCP endpoint — and nothing else:
+what is left is a clean Next.js project with Val fully set up, and
+nothing else:
 
 1. Delete `src/app/(main)/page.tsx` and `src/content/home.val.ts`.
 2. Remove the `home.val` line from `val.modules.ts`.
@@ -49,8 +48,6 @@ API and the MCP endpoint — and nothing else:
 | `src/val/val.rsc.ts`                                  | `fetchVal` / `fetchValRoute`: reading content in a Server Component |
 | `src/val/val.client.ts`                               | `useVal` / `useValRoute`: reading content in a Client Component     |
 | `src/val/val.server.ts`                               | The Val API, served by `src/app/(val)/api/val`                      |
-| `src/app/api/mcp/route.ts`                            | Val's content tools for coding agents, over MCP                     |
-| `src/val/mcp.ts`                                      | What the MCP endpoint serves, and who may call it                   |
 | `src/app/(main)/layout.tsx`                           | The site's root layout: `ValProvider`, around every page            |
 | `src/app/(val)/`                                      | Val Studio at `/val`, and the Val API, with a layout of their own   |
 | `src/app/ValModulesClient.tsx`                        | Hands your schemas to the Studio, on the client                     |
@@ -100,6 +97,9 @@ This project serves Val's content tools over the
 [Model Context Protocol](https://modelcontextprotocol.io) at
 `/api/mcp`, so a coding agent can read your schemas, look content up, validate
 it and edit it — without a browser and without being shown the Studio.
+
+The endpoint is `src/app/api/mcp/route.ts`, and what it serves, and who may call
+it, is `src/val/mcp.ts`.
 
 Point a client at it. In local development that is all it needs:
 
