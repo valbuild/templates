@@ -1,0 +1,150 @@
+{
+  "$comment": "What `npm create @valbuild` and admin.val.build/new can offer, and what each optional feature is made of. Read by both at run time, so a template is added, renamed or retired here and nowhere else. `node scripts/catalog.mjs --check` verifies every path, dependency and marker below against the templates. See README.md.",
+  "version": 1,
+  "templates": [
+    {
+      "id": "tanstack-full",
+      "framework": "tanstack",
+      "name": "Full",
+      "description": "A site to build on: a theme editors can change, sections, light and dark, Storybook",
+      "path": "tanstack/full",
+      "icon": "catalog/icons/full.svg",
+      "screenshots": [
+        "catalog/screenshots/tanstack-full-light.png",
+        "catalog/screenshots/tanstack-full-dark.png"
+      ],
+      "features": {
+        "mcp": {
+          "paths": [
+            "src/routes/api/mcp.ts",
+            "src/routes/[.]well-known.oauth-protected-resource.ts",
+            "src/val/mcp.server.ts",
+            "src/val/mcp.images.server.ts"
+          ],
+          "dependencies": [
+            "@valbuild/mcp",
+            "@modelcontextprotocol/server",
+            "mcp-handler",
+            "zod",
+            "sharp"
+          ],
+          "docs": ["README.md", "AGENTS.md"]
+        },
+        "imageUploads": {
+          "file": "src/val/mcp.images.server.ts",
+          "dependencies": ["sharp"]
+        }
+      },
+      "regenerate": {
+        "script": "generate-routes",
+        "files": ["src/routeTree.gen.ts"]
+      }
+    },
+    {
+      "id": "tanstack-minimal",
+      "framework": "tanstack",
+      "name": "Minimal",
+      "description": "Val set up and nothing else: one example page, no CSS framework",
+      "path": "tanstack/minimal",
+      "icon": "catalog/icons/minimal.svg",
+      "screenshots": [
+        "catalog/screenshots/tanstack-minimal-light.png",
+        "catalog/screenshots/tanstack-minimal-dark.png"
+      ],
+      "features": {
+        "mcp": {
+          "paths": [
+            "src/routes/api/mcp.ts",
+            "src/routes/[.]well-known.oauth-protected-resource.ts",
+            "src/val/mcp.server.ts",
+            "src/val/mcp.images.server.ts"
+          ],
+          "dependencies": [
+            "@valbuild/mcp",
+            "@modelcontextprotocol/server",
+            "mcp-handler",
+            "zod",
+            "sharp"
+          ],
+          "docs": ["README.md", "AGENTS.md"]
+        },
+        "imageUploads": {
+          "file": "src/val/mcp.images.server.ts",
+          "dependencies": ["sharp"]
+        }
+      },
+      "regenerate": {
+        "script": "generate-routes",
+        "files": ["src/routeTree.gen.ts"]
+      }
+    },
+    {
+      "id": "nextjs-full",
+      "framework": "nextjs",
+      "name": "Full",
+      "description": "A site to build on: a theme editors can change, sections, light and dark, Storybook",
+      "path": "nextjs/full",
+      "icon": "catalog/icons/full.svg",
+      "screenshots": [
+        "catalog/screenshots/nextjs-full-light.png",
+        "catalog/screenshots/nextjs-full-dark.png"
+      ],
+      "features": {
+        "mcp": {
+          "paths": [
+            "src/app/api/mcp",
+            "src/app/.well-known/oauth-protected-resource",
+            "src/val/mcp.ts",
+            "src/val/mcp.images.ts"
+          ],
+          "dependencies": [
+            "@valbuild/mcp",
+            "@modelcontextprotocol/server",
+            "mcp-handler",
+            "zod",
+            "sharp"
+          ],
+          "docs": ["README.md", "AGENTS.md"]
+        },
+        "imageUploads": {
+          "file": "src/val/mcp.images.ts",
+          "dependencies": ["sharp"]
+        }
+      }
+    },
+    {
+      "id": "nextjs-minimal",
+      "framework": "nextjs",
+      "name": "Minimal",
+      "description": "Val set up and nothing else: one example page, no CSS framework",
+      "path": "nextjs/minimal",
+      "icon": "catalog/icons/minimal.svg",
+      "screenshots": [
+        "catalog/screenshots/nextjs-minimal-light.png",
+        "catalog/screenshots/nextjs-minimal-dark.png"
+      ],
+      "features": {
+        "mcp": {
+          "paths": [
+            "src/app/api/mcp",
+            "src/app/.well-known/oauth-protected-resource",
+            "src/val/mcp.ts",
+            "src/val/mcp.images.ts"
+          ],
+          "dependencies": [
+            "@valbuild/mcp",
+            "@modelcontextprotocol/server",
+            "mcp-handler",
+            "zod",
+            "sharp"
+          ],
+          "docs": ["README.md", "AGENTS.md"]
+        },
+        "imageUploads": {
+          "file": "src/val/mcp.images.ts",
+          "dependencies": ["sharp"]
+        }
+      }
+    }
+  ]
+}

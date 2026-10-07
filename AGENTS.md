@@ -14,6 +14,10 @@ The rules that are easy to break:
   `src/framework.tsx`.
 - **Each template is its own project**, with its own lockfile and its own
   `AGENTS.md` that ships to users. Run its checks from its folder.
+- **`catalog.json` names files in the templates.** Moving, renaming or adding
+  anything that serves MCP (a route, `src/val/mcp*`, a dependency, a doc's
+  `val:mcp` section) means updating the catalog; `node scripts/catalog.mjs
+--check` says what no longer matches.
 - **A change to `shared/` lands in both Full templates** (TanStack and Next.js).
   Check it in both. A shared component with state needs `"use client"` for
   Next.js; one that imports `next/*` or `@tanstack/*` breaks the other.
@@ -28,3 +32,5 @@ pnpm run typecheck && pnpm run lint && pnpm exec prettier --check . \
 ```
 
 For a Minimal template, the same without `test` and `build-storybook`.
+
+And from the root, always: `node scripts/sync.mjs --check && node scripts/catalog.mjs --check`.

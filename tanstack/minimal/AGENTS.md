@@ -45,10 +45,6 @@ that must happen during the request. When you do, it **must** go through
   shell for `/val` too, so nothing site-specific belongs in it.
 - Strings read through the hooks carry an invisible edit tag. Use `val.raw()`
   wherever a string must be exact: a URL, a `key`, a comparison, `<title>`.
-- Val's content tools are served over MCP at `/api/mcp` (`src/routes/api/mcp.ts`,
-  `src/val/mcp.server.ts`). In local development an agent can read, validate
-  and edit content there; a production build refuses unless the project is
-  connected to Val Build and OAuth is configured — see README.md.
 - There is no CSS framework: `src/styles.css` holds the few global rules, and
   the example page styles itself inline. Add whatever styling you prefer.
 - Run `npm run validate` after changing content. It type-checks the content
@@ -57,5 +53,15 @@ that must happen during the request. When you do, it **must** go through
 ## Removing the example page
 
 Delete `src/routes/_site.index.tsx` and `src/content/home.val.ts`, and remove
-the `home.val` line from `val.modules.ts`. Everything left is Val's own setup:
-the Studio, the API and the MCP endpoint.
+the `home.val` line from `val.modules.ts`. Everything left is Val's own setup.
+
+<!-- val:mcp:start -->
+
+## Content tools (MCP)
+
+Val's content tools are served over MCP at `/api/mcp` (`src/routes/api/mcp.ts`,
+`src/val/mcp.server.ts`). In local development an agent can read, validate and edit
+content there; a production build refuses unless the project is connected to
+Val Build and OAuth is configured — see README.md.
+
+<!-- val:mcp:end -->

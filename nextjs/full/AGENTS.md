@@ -80,3 +80,14 @@ button shape, density. `resolveTheme` fills the gaps from the preset and
 - **Nothing here imports the framework.** Router links and Val's renderers come
   from `src/framework.tsx`.
 - `/styleguide` and `pnpm storybook` show every component under the theme.
+
+<!-- val:mcp:start -->
+
+## Content tools (MCP)
+
+Val's content tools are served over MCP at `/api/mcp` (`src/app/api/mcp/route.ts`,
+`src/val/mcp.ts`). In local development an agent can read, validate and edit
+content there; a production build refuses unless the project is connected to
+Val Build and OAuth is configured — see README.md.
+
+<!-- val:mcp:end -->

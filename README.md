@@ -11,6 +11,9 @@ nextjs/minimal/      Minimal on Next.js
 shared/              code that more than one template is made of
 templates.json       which parts of shared/ each template uses
 scripts/sync.mjs     copies shared/ into the templates
+catalog.json         what `npm create @valbuild` and admin.val.build/new offer
+catalog/             the icons and screenshots the catalog points at
+scripts/catalog.mjs  checks catalog.json against the templates
 ```
 
 Planned: `blog` (one front page + blog posts) and `docs`, on both frameworks.
@@ -26,12 +29,8 @@ README explains how to delete, and nothing a developer would have to undo: no
 CSS framework, no components, no theme.
 
 Every template serves Val's content tools over MCP at `/api/mcp`, which
-`npm create @valbuild` can leave out. The files are
-`src/routes/api/mcp.ts`, `src/routes/[.]well-known.oauth-protected-resource.ts`
-and `src/val/mcp*.server.ts` in TanStack, and `src/app/api/mcp/route.ts`,
-`src/app/.well-known/oauth-protected-resource/route.ts` and `src/val/mcp*.ts` in
-Next.js, plus the README section between `<!-- val:mcp:start -->` and
-`<!-- val:mcp:end -->`.
+`npm create @valbuild` can leave out. Which files, dependencies and doc sections
+that removes is listed per template in `catalog.json` (below).
 
 The old starters (`valbuild/template-tanstack-starter` and
 `valbuild/template-nextjs-starter`) were brought in with their history and then
@@ -69,7 +68,7 @@ cd ../.. && node scripts/sync.mjs --pull tanstack/full && node scripts/sync.mjs
 > **CI is not switched on yet.** The workflow is in `ci/check.yml` because
 > the session that created this repository could not push to
 > `.github/workflows/`. Move it there (`git mv ci/check.yml
-> .github/workflows/check.yml`) to turn it on.
+.github/workflows/check.yml`) to turn it on.
 
 ### What is shared, and what is not
 
@@ -92,6 +91,37 @@ is `s.image(imagesVal)` and the like — but their entries are the template's
 content, so each template keeps its own and the sync leaves them alone. A
 template that uses the shared components must have all five.
 
+## The catalog
+
+`catalog.json` is the list of templates that can be created, read at run time
+by `npm create @valbuild` and by admin.val.build/new. This repository decides
+what is offered, in what order, with what name, icon and screenshots — a
+template is added, renamed or retired here, without a release of the CLI.
+
+Each entry also says what its optional features are MADE of, because only the
+template knows: `features.mcp` lists the files and directories, the
+dependencies and the docs (`README.md`, `AGENTS.md`, each with one
+`<!-- val:mcp:start -->` … `<!-- val:mcp:end -->` region) that go when MCP is
+declined, and `features.imageUploads` the file that is replaced and the
+dependency that goes when image uploads are. `regenerate` names a script that
+brings generated files up to date afterwards — TanStack's `routeTree.gen.ts`
+imports every route, including the MCP ones.
+
+`node scripts/catalog.mjs --check` checks every one of those claims, and CI runs
+it: each path exists and stays inside its template, each dependency is
+declared, each doc has its markers, and nothing left after a feature is removed
+still imports a removed file or package.
+
+The CLI reads the catalog from the same ref it downloads the template from. To
+try a branch through `npm create` itself before it lands:
+
+```sh
+VAL_TEMPLATES_REF=my-branch npm create @valbuild@latest
+```
+
+Screenshots are 1440×900, of the home page with nothing edited, in light and
+dark, from a production build.
+
 ## Adding a template
 
 1. Make the folder a complete project (copying the closest template is
@@ -100,5 +130,6 @@ template that uses the shared components must have all five.
    `node scripts/sync.mjs`.
 3. Add a job for it to the CI workflow (`ci/check.yml` until it is moved to
    `.github/workflows/`).
-4. Point `npm create @valbuild` at it: `TEMPLATES` in
-   `valbuild/val`'s `packages/create/src/framework.ts`.
+4. Add it to `catalog.json`, with an icon and screenshots in `catalog/`, and
+   run `node scripts/catalog.mjs --check`. That is all `npm create @valbuild`
+   and admin.val.build/new need to offer it.

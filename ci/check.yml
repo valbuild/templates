@@ -11,7 +11,7 @@ permissions:
 
 jobs:
   sync:
-    name: shared/ is in sync
+    name: shared/ is in sync, and the catalog is true
     runs-on: ubuntu-latest
     steps:
       - uses: actions/checkout@v4
@@ -19,6 +19,7 @@ jobs:
         with:
           node-version: 22
       - run: node scripts/sync.mjs --check
+      - run: node scripts/catalog.mjs --check
 
   tanstack-full:
     runs-on: ubuntu-latest

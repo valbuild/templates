@@ -4,7 +4,8 @@
   "type": "module",
   "scripts": {
     "sync": "node scripts/sync.mjs",
-    "sync:check": "node scripts/sync.mjs --check"
+    "sync:check": "node scripts/sync.mjs --check",
+    "catalog:check": "node scripts/catalog.mjs --check"
   },
   "engines": {
     "node": ">=22"
