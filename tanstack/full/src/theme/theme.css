@@ -139,6 +139,30 @@ html {
   color: var(--fg-muted);
 }
 
+/*
+ * A square button that holds an icon or an arrow, not a word: the carousel's
+ * previous/next. Its own class rather than a button variant, because the
+ * button styles are written for text -- outline draws the secondary button as
+ * an underline, and an underlined arrow reads as a typo. It follows the
+ * button's shape and the surface's colours, and soft drops the border for a
+ * fill, as soft does everywhere.
+ */
+.icon-button {
+  border-radius: var(--button-radius);
+  border: 1.5px solid var(--border);
+  color: var(--fg);
+}
+.icon-button:hover:not(:disabled) {
+  background-color: var(--subtle);
+}
+[data-button-style="soft"] .icon-button {
+  border-color: transparent;
+  background-color: var(--subtle);
+}
+[data-button-style="soft"] .icon-button:hover:not(:disabled) {
+  background-color: color-mix(in oklab, var(--subtle) 80%, var(--fg));
+}
+
 .text-link {
   color: var(--link);
   text-decoration-line: underline;

@@ -91,14 +91,14 @@ export function Carousel({
             disabled={edges.start}
             onClick={() => step(-1)}
           >
-            ←
+            <Arrow direction="previous" />
           </CarouselButton>
           <CarouselButton
             label="Next"
             disabled={edges.end}
             onClick={() => step(1)}
           >
-            →
+            <Arrow direction="next" />
           </CarouselButton>
         </div>
       )}
@@ -123,10 +123,30 @@ function CarouselButton({
       aria-label={label}
       disabled={disabled}
       onClick={onClick}
-      className="button inline-flex size-11 items-center justify-center font-body text-(length:--step-1) transition-colors focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-link disabled:opacity-35"
-      data-variant="secondary"
+      className="icon-button inline-flex size-11 items-center justify-center transition-colors focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-link disabled:opacity-35"
     >
       {children}
     </button>
+  );
+}
+
+/**
+ * Drawn rather than typed: an arrow character is whatever the theme's body
+ * font makes of it, which in a serif is a hairline the width of a hyphen.
+ */
+function Arrow({ direction }: { direction: "previous" | "next" }) {
+  return (
+    <svg
+      aria-hidden
+      viewBox="0 0 20 20"
+      className={cn("size-5", direction === "previous" && "-scale-x-100")}
+      fill="none"
+      stroke="currentColor"
+      strokeWidth={1.75}
+      strokeLinecap="round"
+      strokeLinejoin="round"
+    >
+      <path d="M4 10h12M11 5l5 5-5 5" />
+    </svg>
   );
 }
