@@ -1,0 +1,17 @@
+@import "tailwindcss";
+@import "./theme/theme.css";
+
+/*
+ * Everything about how the site looks is in `theme/theme.css` (what the
+ * tokens mean) and `theme/theme.val.ts` (the choices, as content). Put
+ * site-wide rules that are NOT theme choices here.
+ */
+
+/* In `base`, so a utility class (`mt-8`) still wins over it. */
+@layer base {
+  body {
+    margin: 0;
+    -webkit-font-smoothing: antialiased;
+    -moz-osx-font-smoothing: grayscale;
+  }
+}

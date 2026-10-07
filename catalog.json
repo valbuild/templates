@@ -28,16 +28,68 @@
             "zod",
             "sharp"
           ],
-          "docs": ["README.md", "AGENTS.md"]
+          "docs": [
+            "README.md",
+            "AGENTS.md"
+          ]
         },
         "imageUploads": {
           "file": "src/val/mcp.images.server.ts",
-          "dependencies": ["sharp"]
+          "dependencies": [
+            "sharp"
+          ]
         }
       },
       "regenerate": {
         "script": "generate-routes",
-        "files": ["src/routeTree.gen.ts"]
+        "files": [
+          "src/routeTree.gen.ts"
+        ]
+      }
+    },
+    {
+      "id": "tanstack-blog",
+      "framework": "tanstack",
+      "name": "Blog",
+      "description": "A front page and a blog: posts, authors, an RSS feed, on the Full template's theme",
+      "path": "tanstack/blog",
+      "icon": "catalog/icons/blog.svg",
+      "screenshots": [
+        "catalog/screenshots/tanstack-blog-light.png",
+        "catalog/screenshots/tanstack-blog-dark.png"
+      ],
+      "features": {
+        "mcp": {
+          "paths": [
+            "src/routes/api/mcp.ts",
+            "src/routes/[.]well-known.oauth-protected-resource.ts",
+            "src/val/mcp.server.ts",
+            "src/val/mcp.images.server.ts"
+          ],
+          "dependencies": [
+            "@valbuild/mcp",
+            "@modelcontextprotocol/server",
+            "mcp-handler",
+            "zod",
+            "sharp"
+          ],
+          "docs": [
+            "README.md",
+            "AGENTS.md"
+          ]
+        },
+        "imageUploads": {
+          "file": "src/val/mcp.images.server.ts",
+          "dependencies": [
+            "sharp"
+          ]
+        }
+      },
+      "regenerate": {
+        "script": "generate-routes",
+        "files": [
+          "src/routeTree.gen.ts"
+        ]
       }
     },
     {
@@ -66,16 +118,23 @@
             "zod",
             "sharp"
           ],
-          "docs": ["README.md", "AGENTS.md"]
+          "docs": [
+            "README.md",
+            "AGENTS.md"
+          ]
         },
         "imageUploads": {
           "file": "src/val/mcp.images.server.ts",
-          "dependencies": ["sharp"]
+          "dependencies": [
+            "sharp"
+          ]
         }
       },
       "regenerate": {
         "script": "generate-routes",
-        "files": ["src/routeTree.gen.ts"]
+        "files": [
+          "src/routeTree.gen.ts"
+        ]
       }
     },
     {
@@ -104,11 +163,16 @@
             "zod",
             "sharp"
           ],
-          "docs": ["README.md", "AGENTS.md"]
+          "docs": [
+            "README.md",
+            "AGENTS.md"
+          ]
         },
         "imageUploads": {
           "file": "src/val/mcp.images.ts",
-          "dependencies": ["sharp"]
+          "dependencies": [
+            "sharp"
+          ]
         }
       }
     },
@@ -138,11 +202,16 @@
             "zod",
             "sharp"
           ],
-          "docs": ["README.md", "AGENTS.md"]
+          "docs": [
+            "README.md",
+            "AGENTS.md"
+          ]
         },
         "imageUploads": {
           "file": "src/val/mcp.images.ts",
-          "dependencies": ["sharp"]
+          "dependencies": [
+            "sharp"
+          ]
         }
       }
     }

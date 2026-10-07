@@ -6,6 +6,7 @@ can share code.
 ```
 tanstack/full/       Full on TanStack Start: a themeable design system + sections
 tanstack/minimal/    Minimal on TanStack Start: Val wired in, one black-and-white page
+tanstack/blog/       Blog on TanStack Start: Full's theme and sections, a blog, authors, RSS
 nextjs/full/         Full on Next.js (App Router), with the same components
 nextjs/minimal/      Minimal on Next.js
 shared/              code that more than one template is made of
@@ -16,10 +17,10 @@ catalog/             the icons and screenshots the catalog points at
 scripts/catalog.mjs  checks catalog.json against the templates
 ```
 
-Planned: `blog` (one front page + blog posts) and `docs`, on both frameworks.
+Planned: `blog` on Next.js, and `docs` on both frameworks.
 TanStack Start is the primary one: a feature lands there first.
 
-The two Full templates are the same components, theme, sections and stories —
+The Full templates and the Blog are the same components, theme, sections and stories —
 copied from `shared/` — on different frameworks; what differs is routing,
 layouts and `src/framework.tsx`.
 
