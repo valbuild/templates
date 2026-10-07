@@ -44,6 +44,28 @@ jobs:
       - run: pnpm exec val validate
       - run: pnpm run build-storybook
 
+  tanstack-minimal:
+    runs-on: ubuntu-latest
+    defaults:
+      run:
+        working-directory: tanstack/minimal
+    steps:
+      - uses: actions/checkout@v4
+      - uses: pnpm/action-setup@v4
+        with:
+          version: 10
+      - uses: actions/setup-node@v4
+        with:
+          node-version: 22
+          cache: pnpm
+          cache-dependency-path: tanstack/minimal/pnpm-lock.yaml
+      - run: pnpm install --frozen-lockfile
+      - run: pnpm run typecheck
+      - run: pnpm run lint
+      - run: pnpm exec prettier --check .
+      - run: pnpm run build
+      - run: pnpm exec val validate
+
   tanstack-starter:
     runs-on: ubuntu-latest
     defaults:

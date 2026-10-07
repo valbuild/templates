@@ -7,13 +7,17 @@ can share code.
 nextjs/starter/      the Next.js starter (was valbuild/template-nextjs-starter)
 tanstack/starter/    the TanStack Start starter (was valbuild/template-tanstack-starter)
 tanstack/full/       the Full template: a themeable design system + sections
+tanstack/minimal/    the Minimal template: Val wired in, one black-and-white page
 shared/              code that more than one template is made of
 templates.json       which parts of shared/ each template uses
 scripts/sync.mjs     copies shared/ into the templates
 ```
 
-Planned next to `tanstack/full`: `minimal` (one example section), `blog` (one
-front page + blog posts) and `docs`, then the same set for Next.js.
+Planned next to `tanstack/full` and `tanstack/minimal`: `blog` (one front page
++ blog posts) and `docs`, then the same set for Next.js.
+
+`tanstack/minimal` shares nothing from `shared/`: it is the smallest project
+that runs Val, plus one example page that its README explains how to delete.
 
 ## Every template is complete on its own
 
