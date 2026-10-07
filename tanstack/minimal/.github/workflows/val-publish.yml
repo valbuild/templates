@@ -32,7 +32,7 @@ permissions:
 jobs:
   publish:
     # Not in the template repository itself, which is not a Val project.
-    if: github.repository != 'valbuild/template-tanstack-starter'
+    if: github.repository != 'valbuild/templates'
     runs-on: ubuntu-latest
     env:
       # Whether the secret is set, and nothing else: the token itself is

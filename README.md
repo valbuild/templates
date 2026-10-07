@@ -1,11 +1,9 @@
 # Val templates
 
-Every starter that `npm create @valbuild` can make, in one repository, so they
+Every template that `npm create @valbuild` can make, in one repository, so they
 can share code.
 
 ```
-nextjs/starter/      the Next.js starter (was valbuild/template-nextjs-starter)
-tanstack/starter/    the TanStack Start starter (was valbuild/template-tanstack-starter)
 tanstack/full/       the Full template: a themeable design system + sections
 tanstack/minimal/    the Minimal template: Val wired in, one black-and-white page
 shared/              code that more than one template is made of
@@ -14,7 +12,10 @@ scripts/sync.mjs     copies shared/ into the templates
 ```
 
 Planned next to `tanstack/full` and `tanstack/minimal`: `blog` (one front page
-+ blog posts) and `docs`, then the same set for Next.js.
++ blog posts) and `docs`. Every template is TanStack Start; there are no
+Next.js templates. The old starters (`valbuild/template-tanstack-starter` and
+`valbuild/template-nextjs-starter`) were brought in with their history and
+then removed, so `git log` still has them.
 
 `tanstack/minimal` shares nothing from `shared/`: it is the smallest project
 that runs Val, plus one example page that its README explains how to delete.
@@ -54,11 +55,12 @@ cd ../.. && node scripts/sync.mjs --pull tanstack/full && node scripts/sync.mjs
 
 ### What is shared, and what is not
 
-Shared code is the same file in every framework. Everything a component needs
+Shared code is the same file in every template. Everything a component needs
 from the framework comes through one per-template file, `src/framework.tsx`:
 `RouterLink`, `ValImage`, `ValRichText`, `ValVideo` and Val's types. A shared
-component imports those from there and never from `@tanstack/*`, `next/*` or
-`@valbuild/tanstack` / `@valbuild/next` directly. That file, the routes, the
+component imports those from there and never from `@tanstack/*` or
+`@valbuild/tanstack` directly, which keeps the components free of the router
+and of Val's packages. That file, the routes, the
 layout, the header and footer, the config files and `package.json` are the
 template's own.
 
