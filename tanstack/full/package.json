@@ -24,17 +24,22 @@
     "@fontsource-variable/inter": "^5",
     "@fontsource-variable/plus-jakarta-sans": "^5",
     "@fontsource-variable/source-serif-4": "^5",
+    "@modelcontextprotocol/server": "^2.0.0",
     "@tailwindcss/vite": "^4.1.18",
     "@tanstack/react-devtools": "^0.10.13",
     "@tanstack/react-router": "^1.170.41",
     "@tanstack/react-router-devtools": "^1.167.2",
     "@tanstack/react-start": "^1.168.60",
     "@valbuild/core": "0.141.0",
-    "@valbuild/tanstack": "0.141.0",
+    "@valbuild/mcp": "0.141.1",
+    "@valbuild/tanstack": "0.141.1",
+    "mcp-handler": "^2.1.1",
     "prettier": "^3.9.6",
     "react": "^19.2.0",
     "react-dom": "^19.2.0",
-    "tailwindcss": "^4.1.18"
+    "sharp": "^0.35.4",
+    "tailwindcss": "^4.1.18",
+    "zod": "^4.4.3"
   },
   "devDependencies": {
     "@eslint/js": "^10.0.1",
@@ -47,7 +52,7 @@
     "@types/node": "^22.10.2",
     "@types/react": "^19.2.0",
     "@types/react-dom": "^19.2.0",
-    "@valbuild/cli": "0.141.0",
+    "@valbuild/cli": "0.141.1",
     "@valbuild/eslint-plugin": "0.125.0",
     "@valbuild/tanstack-build": "0.140.1",
     "@vitejs/plugin-react": "^6.0.1",
@@ -65,7 +70,8 @@
   "pnpm": {
     "onlyBuiltDependencies": [
       "esbuild",
-      "lightningcss"
+      "lightningcss",
+      "sharp"
     ]
   }
 }

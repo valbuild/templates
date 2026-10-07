@@ -49,6 +49,10 @@ that must happen during the request. When you do, it **must** go through
   content file needs no change there; removing that setting breaks the build.
 - Every page of the site goes under the `_site` layout. `__root.tsx` is the
   shell for `/val` too, so nothing site-specific belongs in it.
+- Val's content tools are served over MCP at `/api/mcp` (`src/routes/api/mcp.ts`,
+  `src/val/mcp.server.ts`). In local development an agent can read, validate
+  and edit content there; a production build refuses unless the project is
+  connected to Val Build and OAuth is configured — see README.md.
 - Run `npm run validate` after changing content. It type-checks the content
   against the schemas and fixes what it can.
 
