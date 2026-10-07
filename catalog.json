@@ -93,6 +93,51 @@
       }
     },
     {
+      "id": "tanstack-docs",
+      "framework": "tanstack",
+      "name": "Docs",
+      "description": "Documentation: nested pages, a sidebar worked out from the pages, code blocks and callouts, on the Full template's theme",
+      "path": "tanstack/docs",
+      "icon": "catalog/icons/docs.svg",
+      "screenshots": [
+        "catalog/screenshots/tanstack-docs-light.png",
+        "catalog/screenshots/tanstack-docs-dark.png"
+      ],
+      "features": {
+        "mcp": {
+          "paths": [
+            "src/routes/api/mcp.ts",
+            "src/routes/[.]well-known.oauth-protected-resource.ts",
+            "src/val/mcp.server.ts",
+            "src/val/mcp.images.server.ts"
+          ],
+          "dependencies": [
+            "@valbuild/mcp",
+            "@modelcontextprotocol/server",
+            "mcp-handler",
+            "zod",
+            "sharp"
+          ],
+          "docs": [
+            "README.md",
+            "AGENTS.md"
+          ]
+        },
+        "imageUploads": {
+          "file": "src/val/mcp.images.server.ts",
+          "dependencies": [
+            "sharp"
+          ]
+        }
+      },
+      "regenerate": {
+        "script": "generate-routes",
+        "files": [
+          "src/routeTree.gen.ts"
+        ]
+      }
+    },
+    {
       "id": "tanstack-minimal",
       "framework": "tanstack",
       "name": "Minimal",

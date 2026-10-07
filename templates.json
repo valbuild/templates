@@ -25,6 +25,18 @@
       "src/utils/href.ts",
       "public/samples"
     ],
+    "tanstack/docs": [
+      "src/theme",
+      "src/components/typography",
+      "src/components/atoms",
+      "src/components/base",
+      "src/components/sections",
+      "src/styleguide",
+      "src/stories",
+      "src/utils/cn.ts",
+      "src/utils/href.ts",
+      "public/samples"
+    ],
     "nextjs/full": [
       "src/theme",
       "src/components/typography",
