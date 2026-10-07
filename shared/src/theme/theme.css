@@ -47,8 +47,9 @@
  *
  * `themeCss` sets `color-scheme` on :root from the theme's `mode` ("light
  * dark" for system). A visitor's own choice, made with the header toggle and
- * applied before paint by the script in `__root.tsx`, is `data-theme` on
- * <html> and wins over it.
+ * applied before paint by the site layout's inline script (`_site.tsx` in
+ * TanStack, `(main)/layout.tsx` in Next.js), is `data-theme` on <html> and
+ * wins over it.
  *
  * Every surface colour is `light-dark(<light>, <dark>)`, so switching mode is
  * the browser re-reading `color-scheme` and nothing else: no class on every
