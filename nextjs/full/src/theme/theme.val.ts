@@ -40,13 +40,10 @@ const fontSchema = s.discriminatedUnion(
     files: s
       .array(
         s.object({
-          file: s
-            .file(fontsVal)
-            .validate((file) =>
-              file.path.toLowerCase().endsWith(".woff2")
-                ? false
-                : "Upload a .woff2 file — the format every current browser reads, and the smallest.",
-            ),
+          // Picked from the font library, an `s.fontset()`, which is what
+          // decides the format: `.woff2`, the one every current browser
+          // reads and the smallest, and the one `themeCss` declares.
+          file: s.font(fontsVal),
           weight: s
             .number({ min: 100, max: 900 })
             .validate((weight) =>
