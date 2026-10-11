@@ -1,4 +1,3 @@
-# Move to .github/workflows/mirror.yml to enable. See README.md.
 # Publishes the templates in mirrors.json to their own repositories, then has
 # valbuild/home reseed the sites /new copies. What runs is scripts/mirror.sh;
 # this file owns only the trigger and the secrets.

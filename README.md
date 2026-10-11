@@ -15,7 +15,7 @@ templates.json       which parts of shared/ each template uses
 scripts/sync.mjs     copies shared/ into the templates
 catalog.json         what `npm create @valbuild` and admin.val.build/new offer
 mirrors.json         the template repositories /new seeds from and copies, see below
-scripts/mirror.sh    publishes them, then has valbuild/home reseed (ci/mirror.yml)
+scripts/mirror.sh    publishes them, then has valbuild/home reseed
 catalog/             the icons and screenshots the catalog points at
 scripts/catalog.mjs  checks catalog.json against the templates
 ```
@@ -152,11 +152,6 @@ offers is also published as its own repository, a mirror:
    failed to push fails the run and nothing is reseeded. So the site a new
    project starts with and the code it is given on GitHub are always the same
    commit.
-
-> **Not switched on yet.** Like `ci/check.yml`, the workflow is in
-> `ci/mirror.yml` because the session that wrote it could not push to
-> `.github/workflows/`. Turn it on with
-> `git mv ci/mirror.yml .github/workflows/mirror.yml`.
 
 **Never change a mirror directly.** The next push here overwrites it.
 
