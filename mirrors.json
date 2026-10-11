@@ -1,0 +1,9 @@
+{
+  "$comment": "Which template folders are published as their own repository, and where. Those repositories are what admin.val.build/new seeds its sites from and copies into a person's GitHub, so a folder listed here is a template /new can offer. scripts/mirror.sh pushes them; see README.md.",
+  "mirrors": {
+    "tanstack/full": "valbuild/template-tanstack-full",
+    "tanstack/blog": "valbuild/template-tanstack-blog",
+    "tanstack/docs": "valbuild/template-tanstack-docs",
+    "tanstack/minimal": "valbuild/template-tanstack-minimal"
+  }
+}

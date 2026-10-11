@@ -14,6 +14,8 @@ shared/              code that more than one template is made of
 templates.json       which parts of shared/ each template uses
 scripts/sync.mjs     copies shared/ into the templates
 catalog.json         what `npm create @valbuild` and admin.val.build/new offer
+mirrors.json         the template repositories /new seeds from and copies, see below
+scripts/mirror.sh    publishes them, then has valbuild/home reseed (ci/mirror.yml)
 catalog/             the icons and screenshots the catalog points at
 scripts/catalog.mjs  checks catalog.json against the templates
 ```
@@ -124,6 +126,53 @@ VAL_TEMPLATES_REF=my-branch npm create @valbuild@latest
 Screenshots are 1440×900, of the home page with nothing edited, in light and
 dark, from a production build.
 
+## The mirrors, and what admin.val.build/new seeds from
+
+admin.val.build/new makes two things from a template: a site, copied from a
+SEED the platform builds, and, when someone asks for it, their own GitHub
+repository with the code. GitHub can only make a repository from a WHOLE
+template repository, never from one folder of this one, so each template /new
+offers is also published as its own repository, a mirror:
+
+| Folder             | Mirror                               |
+| ------------------ | ------------------------------------ |
+| `tanstack/full`    | `valbuild/template-tanstack-full`    |
+| `tanstack/blog`    | `valbuild/template-tanstack-blog`    |
+| `tanstack/docs`    | `valbuild/template-tanstack-docs`    |
+| `tanstack/minimal` | `valbuild/template-tanstack-minimal` |
+
+`mirrors.json` is that table. On every push to `main` that touches `tanstack/`,
+`.github/workflows/mirror.yml` runs `scripts/mirror.sh`, which:
+
+1. Makes each mirror's `main` the folder exactly as committed here, in one
+   commit that names the commit it came from. Files gone from the folder go
+   from the mirror.
+2. Only once every mirror has been pushed, starts `reseed-templates.yml` in
+   valbuild/home, which rebuilds the seeds **from the mirrors**. A mirror that
+   failed to push fails the run and nothing is reseeded. So the site a new
+   project starts with and the code it is given on GitHub are always the same
+   commit.
+
+> **Not switched on yet.** Like `ci/check.yml`, the workflow is in
+> `ci/mirror.yml` because the session that wrote it could not push to
+> `.github/workflows/`. Turn it on with
+> `git mv ci/mirror.yml .github/workflows/mirror.yml`.
+
+**Never change a mirror directly.** The next push here overwrites it.
+
+The workflow needs two repository secrets. Without either one it fails
+loudly, because a seed that quietly stops following this repository is the bug
+it exists to catch:
+
+- `VAL_TEMPLATE_MIRROR_TOKEN`: a fine-grained token for the mirrors only, with
+  **Contents** and **Workflows** read and write. Workflows is needed because
+  each mirror carries the template's `.github/workflows`.
+- `VAL_HOME_DISPATCH_TOKEN`: a fine-grained token for `valbuild/home` only,
+  with **Actions** read and write.
+
+To publish the mirrors again by hand, use Actions → _Mirror templates and
+reseed_ → **Run workflow**. It always publishes `main`.
+
 ## Adding a template
 
 1. Make the folder a complete project (copying the closest template is
@@ -134,4 +183,8 @@ dark, from a production build.
    `.github/workflows/`).
 4. Add it to `catalog.json`, with an icon and screenshots in `catalog/`, and
    run `node scripts/catalog.mjs --check`. That is all `npm create @valbuild`
-   and admin.val.build/new need to offer it.
+   needs to offer it.
+5. For admin.val.build/new to offer it too: create an empty mirror repository,
+   tick **Settings → General → Template repository** on it, give
+   `VAL_TEMPLATE_MIRROR_TOKEN` access to it, add it to `mirrors.json`, and add
+   it to `platform/templates.json` in valbuild/home.

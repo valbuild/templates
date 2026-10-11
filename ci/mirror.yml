@@ -1,0 +1,50 @@
+# Move to .github/workflows/mirror.yml to enable. See README.md.
+# Publishes the templates in mirrors.json to their own repositories, then has
+# valbuild/home reseed the sites /new copies. What runs is scripts/mirror.sh;
+# this file owns only the trigger and the secrets.
+#
+# Needs two secrets. Missing either, the job fails rather than passing quietly:
+# a seed that silently stops following this repository is the bug this exists
+# to catch.
+#
+# - VAL_TEMPLATE_MIRROR_TOKEN: fine-grained, the mirror repositories only,
+#   "Contents: read and write" and "Workflows: read and write".
+# - VAL_HOME_DISPATCH_TOKEN: fine-grained, valbuild/home only,
+#   "Actions: read and write".
+name: Mirror templates and reseed
+
+on:
+  push:
+    branches: [main]
+    paths:
+      - "tanstack/**"
+      - "mirrors.json"
+      - "scripts/mirror.sh"
+  workflow_dispatch:
+
+permissions:
+  contents: read
+
+# One at a time, and never cancelled: a run cancelled between two mirror pushes
+# leaves the mirrors at different commits. A newer push waiting behind a running
+# one replaces any older one still waiting, which loses nothing -- each run
+# publishes main as it is when it starts.
+concurrency:
+  group: mirror
+  cancel-in-progress: false
+
+jobs:
+  mirror:
+    if: github.repository == 'valbuild/templates'
+    runs-on: ubuntu-latest
+    timeout-minutes: 10
+    steps:
+      - uses: actions/checkout@v4
+        with:
+          ref: main
+          persist-credentials: false
+      - name: Push the mirrors, then ask valbuild/home to reseed
+        env:
+          MIRROR_TOKEN: ${{ secrets.VAL_TEMPLATE_MIRROR_TOKEN }}
+          GH_TOKEN: ${{ secrets.VAL_HOME_DISPATCH_TOKEN }}
+        run: scripts/mirror.sh
