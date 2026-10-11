@@ -1,6 +1,5 @@
-import { createValImageTools } from "@valbuild/mcp";
+import { createValImageTools, type ValImageProcessor } from "@valbuild/mcp";
 import { sharpImageProcessor } from "@valbuild/mcp/sharp";
-import sharp from "sharp";
 
 /**
  * Letting an agent upload images.
@@ -21,4 +20,22 @@ import sharp from "sharp";
  * and remove `sharp` from package.json. Everything else keeps working — an
  * agent can still read, validate and edit content, it just cannot add an image.
  */
-export const valImageTools = createValImageTools(sharpImageProcessor(sharp));
+
+/**
+ * `sharp` is loaded the first time an image is uploaded, not when the server
+ * starts. A host that cannot run its binary — an edge runtime, Val's own
+ * hosting among them — then still serves the site and the rest of MCP, and
+ * only an image upload fails, with the reason. Imported at the top, it takes
+ * the whole server down with it on such a host.
+ */
+let processor: Promise<ValImageProcessor> | undefined;
+const loadProcessor = () =>
+  (processor ??= import("sharp").then((sharp) =>
+    sharpImageProcessor(sharp.default),
+  ));
+
+export const valImageTools = createValImageTools({
+  read: async (bytes) => (await loadProcessor()).read(bytes),
+  encode: async (bytes, request) =>
+    (await loadProcessor()).encode(bytes, request),
+});
