@@ -1,4 +1,5 @@
 import { initValMcp } from "@valbuild/tanstack/server";
+import { createMcpHandler } from "mcp-handler";
 import prettier from "prettier";
 import { config } from "../../val.config";
 import valModules from "../../val.modules";
@@ -51,3 +52,103 @@ const { valMcpAuthorize, valMcpTools, valMcpMetadata } = initValMcp(
 );
 
 export { valMcpAuthorize, valMcpTools, valMcpMetadata };
+
+/**
+ * The transport: `src/routes/api/mcp.ts` hands every request here.
+ *
+ * In this file rather than the route's, because a route file's top level is in
+ * the browser bundle and this is server code through and through.
+ */
+const handler = createMcpHandler(
+  async (server) => {
+    // `mcp-handler` is stateless: it builds a fresh `McpServer` per request and
+    // runs this, so registration is per request, not once at startup. That is
+    // cheap and deliberately left alone — the expensive half, loading the
+    // modules and building the tools, is memoised inside `initValMcp` and
+    // happens once for the process however many requests arrive. What repeats
+    // is the `registerTool` loop.
+    //
+    // Listing needs no credential, which is why it can happen out here at all.
+    // Only CALLING a tool is per-caller, below.
+    const tools = await valMcpTools();
+    for (const tool of tools.list()) {
+      server.registerTool(
+        tool.name,
+        {
+          title: tool.title,
+          description: tool.description,
+          inputSchema: tool.inputSchema,
+          annotations: tool.annotations,
+        },
+        async (args, ctx) => {
+          // Authorized per call, from that call's own HTTP request: the
+          // credential belongs to the caller, not to the server instance the
+          // tools were registered on.
+          const authorized = await valMcpAuthorize(ctx.http?.req);
+          if (authorized.status === "refused") {
+            return toolError(await refusalMessage(authorized.response));
+          }
+          const result = await authorized.tools.call(
+            tool.name,
+            args,
+            authorized.ctx,
+          );
+          if (result.status === "error") {
+            // In-band, so the model sees a failed tool call it can recover from
+            // rather than a dead transport. The code goes in the text because
+            // it is what distinguishes "try something else" from "try again".
+            return toolError(`${result.code}: ${result.message}`);
+          }
+          return {
+            content: [
+              { type: "text" as const, text: JSON.stringify(result.data) },
+            ],
+          };
+        },
+      );
+    }
+  },
+  {
+    serverInfo: { name: "val", version: "1" },
+  },
+);
+
+/**
+ * Refuse before the protocol layer, then serve.
+ *
+ * The per-call check inside each tool is not enough on its own: a request that
+ * should not be answered at all — a browser on another origin, or fs mode on a
+ * deployed host — must not get as far as an `initialize` handshake.
+ */
+export async function valMcpRoute(request: Request): Promise<Response> {
+  const authorized = await valMcpAuthorize(request);
+  if (authorized.status === "refused") {
+    return authorized.response;
+  }
+  return handler(request);
+}
+
+function toolError(message: string) {
+  return {
+    content: [{ type: "text" as const, text: message }],
+    isError: true,
+  };
+}
+
+/** The refusal's own message, so the reason survives into the tool result. */
+async function refusalMessage(response: Response): Promise<string> {
+  try {
+    const body: unknown = await response.json();
+    if (
+      typeof body === "object" &&
+      body !== null &&
+      "error" in body &&
+      typeof body.error === "string"
+    ) {
+      return body.error;
+    }
+  } catch {
+    // fall through to the generic message
+  }
+  return `Val refused this MCP call (HTTP ${response.status}).`;
+}
