@@ -5,7 +5,7 @@ import { s, c } from "../../val.config";
  * `src/theme/theme.val.ts`). Empty until someone uploads one: the template's
  * own fonts ship as packages and need no upload.
  *
- * An `s.fontset()`, so the Studio shows each file as type rather than as a
+ * An `s.fontdir()`, so the Studio shows each file as type rather than as a
  * file name, and a field picks from it with `s.font(fontsVal)`.
  *
  * `.woff2` only: every current browser reads it, it is the smallest, and it is
@@ -13,8 +13,7 @@ import { s, c } from "../../val.config";
  */
 export default c.define(
   "/src/media/fonts.val.ts",
-  s.fontset({
-    dir: "/public/val/fonts",
+  s.fontdir("/public/val/fonts", {
     accept: "font/woff2",
   }),
   {},

@@ -167,7 +167,7 @@ claude mcp add --transport http val http://localhost:3000/api/mcp
 schemas first and is rejected outright if it would leave the content invalid, so
 an agent cannot break the site by editing it.
 
-`upload_image` adds an image to an `s.imageset()` library or an `s.image()` field,
+`upload_image` adds an image to an `s.imagedir()` library or an `s.image()` field,
 including remote ones (`.remote()`) — those upload to
 Val's content host when you publish, not when the agent adds them, so an agent
 needs nothing beyond what your app already has.

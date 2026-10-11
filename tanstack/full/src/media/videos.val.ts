@@ -10,8 +10,7 @@ import { s, c } from "../../val.config";
  */
 export default c.define(
   "/src/media/videos.val.ts",
-  s.videoset({
-    dir: "/public/val/videos",
+  s.videodir("/public/val/videos", {
     accept: "video/*",
     alt: s
       .string()
