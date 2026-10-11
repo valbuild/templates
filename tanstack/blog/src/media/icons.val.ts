@@ -6,8 +6,7 @@ import { s, c } from "../../val.config";
  */
 export default c.define(
   "/src/media/icons.val.ts",
-  s.imageset({
-    dir: "/public/val/icons",
+  s.imagedir("/public/val/icons", {
     accept: "image/svg+xml",
   }),
   {
