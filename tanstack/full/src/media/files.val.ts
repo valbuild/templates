@@ -6,8 +6,7 @@ import { s, c } from "../../val.config";
  */
 export default c.define(
   "/src/media/files.val.ts",
-  s.fileset({
-    dir: "/public/val/files",
+  s.filedir("/public/val/files", {
     accept: "application/pdf,text/plain,text/csv,application/zip",
   }),
   {

@@ -10,7 +10,7 @@ a field picks from them: `s.image(imagesVal)`, `s.video(videosVal)`,
 | `videos.val.ts` | videos, with posters and captions                       | `/public/val/videos` |
 | `files.val.ts`  | downloads: PDFs and other documents                     | `/public/val/files`  |
 | `icons.val.ts`  | single-colour SVG icons                                 | `/public/val/icons`  |
-| `fonts.val.ts`  | custom fonts for the theme (`.woff2`), an `s.fontset()` | `/public/val/fonts`  |
+| `fonts.val.ts`  | custom fonts for the theme (`.woff2`), an `s.fontdir()` | `/public/val/fonts`  |
 
 Why libraries rather than an upload per field:
 

@@ -9,8 +9,7 @@ import { s, c } from "../../val.config";
  */
 export default c.define(
   "/src/media/images.val.ts",
-  s.imageset({
-    dir: "/public/val/images",
+  s.imagedir("/public/val/images", {
     accept: "image/*",
     alt: s
       .string()
