@@ -16,6 +16,7 @@ scripts/sync.mjs     copies shared/ into the templates
 catalog.json         what `npm create @valbuild` and admin.val.build/new offer
 mirrors.json         the template repositories /new seeds from and copies, see below
 scripts/mirror.sh    publishes them, then has valbuild/home reseed
+scripts/app-config.mjs  turns on remote media in each mirror's val.config.ts
 catalog/             the icons and screenshots the catalog points at
 scripts/catalog.mjs  checks catalog.json against the templates
 ```
@@ -146,7 +147,8 @@ offers is also published as its own repository, a mirror:
 
 1. Makes each mirror's `main` the folder exactly as committed here, in one
    commit that names the commit it came from. Files gone from the folder go
-   from the mirror.
+   from the mirror. With one change: `val.config.ts` gets
+   `files: { remote: true }` (see below).
 2. Only once every mirror has been pushed, starts `reseed-templates.yml` in
    valbuild/home, which rebuilds the seeds **from the mirrors**. A mirror that
    failed to push fails the run and nothing is reseeded. So the site a new
@@ -154,6 +156,27 @@ offers is also published as its own repository, a mirror:
    commit.
 
 **Never change a mirror directly.** The next push here overwrites it.
+
+### Media is remote in a mirror, and local here
+
+A project made on /new runs in the Val app, which keeps every image, file and
+video on Val's remote content host and refuses to start without
+`files: { remote: true }` in `initVal` — there is no repository there for an
+upload to go into. A project made with `npm create @valbuild` keeps its media
+in its own repository, and with that setting every image in the template would
+fail validation until uploaded, which needs a Val project it may not have yet.
+
+So the templates here leave it out, and `scripts/app-config.mjs` adds it to
+each mirror's `val.config.ts` as it is published. It edits text, so it refuses
+a config it cannot read plainly — more than one `initVal({`, or a `files` key
+already there — and `mirror.sh` runs `node scripts/app-config.mjs --check`
+before pushing anything, so a template that stops matching fails the run rather
+than leaving the mirrors at different commits. Run the same check after
+changing a mirrored template's `val.config.ts`.
+
+The template's own images are local paths in a mirror. The Studio does not
+block on that (`image:upload-remote` is repaired, not shown), and
+`npx val validate --fix` uploads them.
 
 The workflow needs two repository secrets. Without either one it fails
 loudly, because a seed that quietly stops following this repository is the bug

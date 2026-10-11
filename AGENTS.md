@@ -18,6 +18,10 @@ The rules that are easy to break:
   anything that serves MCP (a route, `src/val/mcp*`, a dependency, a doc's
   `val:mcp` section) means updating the catalog; `node scripts/catalog.mjs
 --check` says what no longer matches.
+- **Never add `files: { remote: true }` to a template's `val.config.ts`.**
+  `npm create @valbuild` projects keep their media locally; the Val app needs
+  it remote, so `scripts/mirror.sh` adds it to the mirrors that admin.val.build
+  copies (`scripts/app-config.mjs`). See README.md, "The mirrors".
 - **A change to `shared/` lands in both Full templates** (TanStack and Next.js).
   Check it in both. A shared component with state needs `"use client"` for
   Next.js; one that imports `next/*` or `@tanstack/*` breaks the other.
@@ -33,4 +37,4 @@ pnpm run typecheck && pnpm run lint && pnpm exec prettier --check . \
 
 For a Minimal template, the same without `test` and `build-storybook`.
 
-And from the root, always: `node scripts/sync.mjs --check && node scripts/catalog.mjs --check`.
+And from the root, always: `node scripts/sync.mjs --check && node scripts/catalog.mjs --check && node scripts/app-config.mjs --check`.

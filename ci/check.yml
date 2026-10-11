@@ -20,6 +20,7 @@ jobs:
           node-version: 22
       - run: node scripts/sync.mjs --check
       - run: node scripts/catalog.mjs --check
+      - run: node scripts/app-config.mjs --check
 
   tanstack-full:
     runs-on: ubuntu-latest
