@@ -71,7 +71,11 @@ node -e '
   echo "pushed     $repo  ($(git -C "$dir" rev-parse --short=8 HEAD))"
 done
 
-gh workflow run reseed-templates.yml \
-  --repo valbuild/home \
-  --field source="valbuild/templates@${source_sha}"
+# The REST call, not `gh workflow run`: without `--ref` that asks GraphQL for
+# home's default branch, which an "Actions: read and write" token is not
+# allowed to read -- and this is the one permission the token has.
+gh api --method POST \
+  repos/valbuild/home/actions/workflows/reseed-templates.yml/dispatches \
+  -f ref=main \
+  -f "inputs[source]=valbuild/templates@${source_sha}"
 echo "asked valbuild/home to reseed"
