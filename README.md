@@ -15,7 +15,8 @@ templates.json       which parts of shared/ each template uses
 scripts/sync.mjs     copies shared/ into the templates
 catalog.json         what `npm create @valbuild` and admin.val.build/new offer
 mirrors.json         the template repositories /new seeds from and copies, see below
-scripts/mirror.sh    publishes them, then has valbuild/home reseed
+scripts/mirror.sh    stages them on `next`, then has valbuild/home reseed
+scripts/promote.sh   moves a mirror's `main` once its seed is built
 scripts/app-config.mjs  turns on remote media in each mirror's val.config.ts
 catalog/             the icons and screenshots the catalog points at
 scripts/catalog.mjs  checks catalog.json against the templates
@@ -142,18 +143,37 @@ offers is also published as its own repository, a mirror:
 | `tanstack/docs`    | `valbuild/template-tanstack-docs`    |
 | `tanstack/minimal` | `valbuild/template-tanstack-minimal` |
 
-`mirrors.json` is that table. On every push to `main` that touches `tanstack/`,
-`.github/workflows/mirror.yml` runs `scripts/mirror.sh`, which:
+`mirrors.json` is that table.
 
-1. Makes each mirror's `main` the folder exactly as committed here, in one
-   commit that names the commit it came from. Files gone from the folder go
-   from the mirror. With one change: `val.config.ts` gets
-   `files: { remote: true }` (see below).
-2. Only once every mirror has been pushed, starts `reseed-templates.yml` in
-   valbuild/home, which rebuilds the seeds **from the mirrors**. A mirror that
-   failed to push fails the run and nothing is reseeded. So the site a new
-   project starts with and the code it is given on GitHub are always the same
-   commit.
+The site and the repository have to be the same commit, and the two are made
+in different ways: the site is copied from a seed valbuild/home builds, and the
+repository by GitHub's `/generate`, which copies a mirror's `main` at whatever
+commit it is at and cannot be given another. So a mirror's `main` moves only
+once its seed has been built from the commit it moves to:
+
+1. On every push to `main` that touches `tanstack/`,
+   `.github/workflows/mirror.yml` runs `scripts/mirror.sh`. It makes each
+   mirror's **`next`** the folder exactly as committed here, in one commit
+   that names the commit it came from. Files gone from the folder go from the
+   mirror. With one change: `val.config.ts` gets `files: { remote: true }`
+   (see below). It never touches `main`, and `/generate` never copies `next`.
+2. Only once every mirror has been pushed, it starts `reseed-templates.yml` in
+   valbuild/home, naming each mirror's `next` commit. A mirror that failed to
+   push fails the run and nothing is reseeded.
+3. valbuild/home builds each seed from exactly the commit named, one template
+   at a time. Only after a template's seed is published does it start
+   `promote-mirror.yml` here, which runs `scripts/promote.sh` and moves that
+   mirror's `main` to the commit. It refuses anything but a fast-forward to a
+   commit on `next`.
+
+So a template whose seed fails to build holds back only itself, and its site
+and its repository both stay at the previous commit; `next` carries the
+commit until a later run builds it or something newer. Re-running home's
+failed reseed picks up where it stopped: it skips the seeds it already built
+and asks again for any `main` still behind its seed.
+
+A mirror's `main` is behind its `next` for as long as a reseed takes. That is
+the point, not a fault.
 
 **Never change a mirror directly.** The next push here overwrites it.
 
@@ -178,18 +198,26 @@ The template's own images are local paths in a mirror. The Studio does not
 block on that (`image:upload-remote` is repaired, not shown), and
 `npx val validate --fix` uploads them.
 
-The workflow needs two repository secrets. Without either one it fails
+The workflows need two repository secrets. Without either one they fail
 loudly, because a seed that quietly stops following this repository is the bug
-it exists to catch:
+they exist to catch:
 
 - `VAL_TEMPLATE_MIRROR_TOKEN`: a fine-grained token for the mirrors only, with
   **Contents** and **Workflows** read and write. Workflows is needed because
-  each mirror carries the template's `.github/workflows`.
+  each mirror carries the template's `.github/workflows`. Both `mirror.yml`
+  and `promote-mirror.yml` use it.
 - `VAL_HOME_DISPATCH_TOKEN`: a fine-grained token for `valbuild/home` only,
   with **Actions** read and write.
 
+valbuild/home holds the reverse: `VAL_TEMPLATES_DISPATCH_TOKEN`, for this
+repository only, with **Actions** read and write, so it can start
+`promote-mirror.yml` and nothing else. It cannot write to a mirror.
+
 To publish the mirrors again by hand, use Actions → _Mirror templates and
-reseed_ → **Run workflow**. It always publishes `main`.
+reseed_ → **Run workflow**. It always publishes `main`. To move one mirror's
+`main` by hand, use _Promote a mirror_ with a commit already on its `next` --
+but only to a commit whose seed is built, or the site and the repository part
+ways.
 
 ## Adding a template
 
@@ -205,4 +233,5 @@ reseed_ → **Run workflow**. It always publishes `main`.
 5. For admin.val.build/new to offer it too: create an empty mirror repository,
    tick **Settings → General → Template repository** on it, give
    `VAL_TEMPLATE_MIRROR_TOKEN` access to it, add it to `mirrors.json`, and add
-   it to `platform/templates.json` in valbuild/home.
+   it to `platform/templates.json` in valbuild/home. The mirror gets a `next`
+   on the next push here, and its `main` once its first seed is built.
