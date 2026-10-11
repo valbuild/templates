@@ -35,6 +35,11 @@ if [ -z "${GH_TOKEN:-}" ]; then
   exit 1
 fi
 
+# Every mirror's config can be made the Val app's, checked before anything is
+# pushed: a template that fails this half way through the loop below would
+# leave the mirrors at different commits.
+node scripts/app-config.mjs --check
+
 source_sha=$(git rev-parse HEAD)
 subject=$(git log -1 --format=%s)
 # Overridable so the script can be tried against local repositories.
@@ -59,6 +64,11 @@ node -e '
   # from the folder goes from the mirror, and nothing untracked comes along.
   find "$dir" -mindepth 1 -maxdepth 1 ! -name .git -exec rm -rf {} +
   git archive --format=tar "HEAD:$folder" | tar -x -C "$dir"
+  # A mirror is what admin.val.build/new copies, and that project runs in the
+  # Val app, which will not start without `files: { remote: true }`. The folder
+  # here leaves it out, because `npm create @valbuild` makes a project that
+  # keeps its media in its own repository. See scripts/app-config.mjs.
+  node scripts/app-config.mjs "$dir"
   git -C "$dir" add -A
   if git -C "$dir" diff --cached --quiet; then
     echo "unchanged  $repo"
