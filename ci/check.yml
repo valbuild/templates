@@ -21,6 +21,26 @@ jobs:
       - run: node scripts/sync.mjs --check
       - run: node scripts/catalog.mjs --check
       - run: node scripts/app-config.mjs --check
+      - run: node scripts/release-age.mjs --check
+
+  # A fresh `pnpm install` of every template, as a person who just created a
+  # project runs it: an empty store, no --frozen-lockfile, and every pnpm they
+  # are likely to have. See scripts/install-check.mjs.
+  install:
+    name: pnpm ${{ matrix.pnpm }} installs every template
+    runs-on: ubuntu-latest
+    strategy:
+      fail-fast: false
+      matrix:
+        pnpm: ["10", "11", "latest"]
+    steps:
+      - uses: actions/checkout@v4
+      - uses: actions/setup-node@v4
+        with:
+          node-version: 22
+      - run: node scripts/install-check.mjs
+        env:
+          PNPM_VERSIONS: ${{ matrix.pnpm }}
 
   tanstack-full:
     runs-on: ubuntu-latest

@@ -25,6 +25,17 @@ The rules that are easy to break:
 - **A change to `shared/` lands in both Full templates** (TanStack and Next.js).
   Check it in both. A shared component with state needs `"use client"` for
   Next.js; one that imports `next/*` or `@tanstack/*` breaks the other.
+- **Bumping `@valbuild/*` in a template means bumping its
+  `minimumReleaseAgeExclude` too.** It names the exact version of every
+  `@valbuild/*` package in that template's lock file, so a project can install
+  a release on the day it came out (pnpm 11 refuses anything under a day old
+  otherwise). After installing, run `node scripts/release-age.mjs` to rewrite
+  the lists, and `node scripts/install-check.mjs` to install every template
+  fresh, as a person who has just created a project does.
+- **Packages allowed to run build scripts go in `allowBuilds` in the
+  template's `pnpm-workspace.yaml`**, not in `package.json`. pnpm 11 ignores
+  `pnpm.onlyBuiltDependencies` there and fails the install on an unapproved
+  build script.
 
 Before pushing a change to `shared/` or to a Full template, from **both**
 `tanstack/full` and `nextjs/full`:
@@ -37,4 +48,7 @@ pnpm run typecheck && pnpm run lint && pnpm exec prettier --check . \
 
 For a Minimal template, the same without `test` and `build-storybook`.
 
-And from the root, always: `node scripts/sync.mjs --check && node scripts/catalog.mjs --check && node scripts/app-config.mjs --check`.
+And from the root, always: `node scripts/sync.mjs --check && node scripts/catalog.mjs --check && node scripts/app-config.mjs --check && node scripts/release-age.mjs --check`.
+After a change to a template's dependencies or its `pnpm-workspace.yaml`, also
+`node scripts/install-check.mjs` (a few minutes: it installs every template with
+pnpm 10, 11 and the latest).

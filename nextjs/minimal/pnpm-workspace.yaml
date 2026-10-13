@@ -1,0 +1,15 @@
+minimumReleaseAgeExclude:
+  - "@valbuild/cli@0.144.4"
+  - "@valbuild/core@0.144.0"
+  - "@valbuild/eslint-plugin@0.125.0"
+  - "@valbuild/language-server@0.144.4"
+  - "@valbuild/mcp@0.144.4"
+  - "@valbuild/next@0.144.4"
+  - "@valbuild/react@0.144.4"
+  - "@valbuild/server@0.144.4"
+  - "@valbuild/shared@0.144.4"
+  - "@valbuild/ui@0.144.4"
+
+allowBuilds:
+  "sharp": true
+  "unrs-resolver": true
