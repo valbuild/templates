@@ -50,13 +50,5 @@
   },
   "engines": {
     "node": "^22.13.0 || >=23.5.0"
-  },
-  "pnpm": {
-    "onlyBuiltDependencies": [
-      "@tailwindcss/oxide",
-      "esbuild",
-      "sharp",
-      "unrs-resolver"
-    ]
   }
 }

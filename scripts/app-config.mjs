@@ -35,13 +35,6 @@ import { fileURLToPath } from "node:url";
 
 const ROOT = path.resolve(path.dirname(fileURLToPath(import.meta.url)), "..");
 
-const COMMENT = [
-  "// This project runs in the Val app, which keeps every image, file and video",
-  "// on Val's remote content host: there is no repository there for an upload",
-  "// to go into, so the app will not start without this. Images that were",
-  "// already in the template are uploaded by `npx val validate --fix`.",
-];
-
 /**
  * The config with `files: { remote: true }` as the first key of `initVal`'s
  * object, or a string saying why that cannot be done plainly.
@@ -66,10 +59,8 @@ function withRemoteFiles(source) {
   if (indent === undefined) {
     return "`initVal({` is not followed by an indented line";
   }
-  const lines = [...COMMENT, "files: { remote: true },"]
-    .map((line) => `\n${indent}${line}`)
-    .join("");
-  return { source: source.slice(0, open) + lines + source.slice(open) };
+  const line = `\n${indent}files: { remote: true },`;
+  return { source: source.slice(0, open) + line + source.slice(open) };
 }
 
 function rewrite(folder) {
