@@ -30,11 +30,11 @@ importers:
         specifier: 0.144.0
         version: 0.144.0
       '@valbuild/mcp':
-        specifier: 0.144.9
-        version: 0.144.9(@types/react@19.3.0)(react-dom@19.2.8(react@19.2.8))(react@19.2.8)
+        specifier: 0.144.10
+        version: 0.144.10(@types/react@19.3.0)(react-dom@19.2.8(react@19.2.8))(react@19.2.8)
       '@valbuild/next':
-        specifier: 0.144.9
-        version: 0.144.9(@types/react@19.3.0)(next@16.4.0(@babel/core@7.29.7)(@types/node@26.4.0)(react-dom@19.2.8(react@19.2.8))(react@19.2.8))(react-dom@19.2.8(react@19.2.8))(react@19.2.8)
+        specifier: 0.144.10
+        version: 0.144.10(@types/react@19.3.0)(next@16.4.0(@babel/core@7.29.7)(@types/node@26.4.0)(react-dom@19.2.8(react@19.2.8))(react@19.2.8))(react-dom@19.2.8(react@19.2.8))(react@19.2.8)
       mcp-handler:
         specifier: ^2.1.1
         version: 2.2.0(@modelcontextprotocol/server@2.3.1)(next@16.4.0(@babel/core@7.29.7)(@types/node@26.4.0)(react-dom@19.2.8(react@19.2.8))(react@19.2.8))
@@ -76,8 +76,8 @@ importers:
         specifier: ^19
         version: 19.3.0(@types/react@19.3.0)
       '@valbuild/cli':
-        specifier: 0.144.9
-        version: 0.144.9(@types/react@19.3.0)(eslint@9.39.5(jiti@2.7.0))(prettier@3.9.9)(react-dom@19.2.8(react@19.2.8))(react@19.2.8)(rolldown@1.2.12)(typescript@5.9.3)
+        specifier: 0.144.10
+        version: 0.144.10(@types/react@19.3.0)(eslint@9.39.5(jiti@2.7.0))(prettier@3.9.9)(react-dom@19.2.8(react@19.2.8))(react@19.2.8)(rolldown@1.2.12)(typescript@5.9.3)
       '@valbuild/eslint-plugin':
         specifier: 0.125.0
         version: 0.125.0(eslint@9.39.5(jiti@2.7.0))(typescript@5.9.3)
@@ -1488,8 +1488,8 @@ packages:
     cpu: [x64]
     os: [win32]
 
-  '@valbuild/cli@0.144.9':
-    resolution: {integrity: sha512-0s9Dx3gcUdkjq2SaW9ey8gd5HVkNvZXczwHkT+ljG7HdjAPTrz7YFcwE4TAdTZKWTyatsNAZm48WcH2F2mAfGQ==}
+  '@valbuild/cli@0.144.10':
+    resolution: {integrity: sha512-cQi6R/eUZZtO6wjFP46f9s51504FME5Gfk6uiyyoDg0igD9xa/nTIreuUJWH+Rk1Zkd5zyzMT8BweTI3PbYRMQ==}
     engines: {node: ^22.13.0 || >=23.5.0}
     hasBin: true
     peerDependencies:
@@ -1519,24 +1519,24 @@ packages:
       eslint: ^8.40.0 || ^9.0.0 || ^10.0.0
       typescript: 5 || 6
 
-  '@valbuild/language-server@0.144.9':
-    resolution: {integrity: sha512-I7yLJrV/WBfdhfn259fXp/6tjBaJf8vIQyaOZ45464x0Jb6+NaiC8uPNCo8mFwpWQK6SJ9LFq5P21xB1wAltzA==}
+  '@valbuild/language-server@0.144.10':
+    resolution: {integrity: sha512-v8YayI4dM8abkw/jAdykrjZnYHpIroKKzsY7y00r4MXxc21ZidYH8KGRL8zHW0u5Z3JK+GXCjw7b2hcs5qozNA==}
     engines: {node: ^20.19.0 || >=22}
     hasBin: true
 
-  '@valbuild/mcp@0.144.9':
-    resolution: {integrity: sha512-F6Blp4P9+YaXZRo2sYr2F9Sta6dySKer2g4ni8Ryx66XjnRCl6G1L9PqQggieKaRGReIjwk2zdECo+RZdQLubg==}
+  '@valbuild/mcp@0.144.10':
+    resolution: {integrity: sha512-QhOUZX9IboxnZjb9ajn6tVhulNL4eYI6Ig8s2PmkS31jUtHqqZd820HbJvq6Yo3snqNcCop1wmaBBFGAeMCMBg==}
     engines: {node: ^20.19.0 || >=22}
 
-  '@valbuild/next@0.144.9':
-    resolution: {integrity: sha512-4rJXfsz3gvnPy7YulM5Rx3fJtbiNcjQrCqDZsqNEJmL53sJvBKrSKP0BjTbTd4pZZ4c+kWKQcwvm3x48ro1jyw==}
+  '@valbuild/next@0.144.10':
+    resolution: {integrity: sha512-3cHG/ctNIkF+CMbQt4Cz2ylm3HDkcjVWoDGkphXHU+pvMb6zq9xXJT+jqu1SfHHPmNAsnqL4Wu8AzKgjcg1S4g==}
     peerDependencies:
       next: '>=14.3.0'
       react: '>=19.0.0'
       react-dom: '>=19.0.0'
 
-  '@valbuild/react@0.144.9':
-    resolution: {integrity: sha512-BVHv9tnBoXZr4OmVpFYqJ05rgtOkvV/7EDS2ExgTpvYH/W4g9F+GcJeqf/bWKRXb1LOJmDKLSWaGLytQAfUlJg==}
+  '@valbuild/react@0.144.10':
+    resolution: {integrity: sha512-ZwHLutV+GJmb1Kjqqbp6J5DKHeO2x7P8C9iiVeBs5cQjQNdPxWgIHFt6/okvQtkBW82+IqX/LYAYFgWFi010gA==}
     peerDependencies:
       '@types/react': '*'
       react: '>=19.0.0'
@@ -1545,15 +1545,15 @@ packages:
       '@types/react':
         optional: true
 
-  '@valbuild/server@0.144.9':
-    resolution: {integrity: sha512-7cOeyzcHhycoSEaAW1CDK6G4OI14FDaZHx3NqKVJvBKe0WMRytlKQK6oXr+uDUdbJ289WinldUsQ5v2jpmXBUw==}
+  '@valbuild/server@0.144.10':
+    resolution: {integrity: sha512-r445KfmJZtLn8Z3g3Uz2WOK48Bo1gzpS9viEVosGZ642XbKVGxGoye7l7jvNHcUZad92zMN8kD2YodwPEKIdvg==}
     engines: {node: ^20.19.0 || >=22}
 
   '@valbuild/shared@0.144.9':
     resolution: {integrity: sha512-cSxVJ12ff6vQAg3ltB2f26Q+l3hn4KdcOEYJo22Aqy5scvssvTDlPK9YTCWJgTUCP7Op5sXbg9MfQ95qPw0l5w==}
 
-  '@valbuild/ui@0.144.9':
-    resolution: {integrity: sha512-DF3WCB1hNVZE7K01xSj2wsEbua34vedM0YvVgHKdkTQQL2y4qeKPBb6/VvpS9K9FsV3sKQcwKJeKUdq2rFu1OA==}
+  '@valbuild/ui@0.144.10':
+    resolution: {integrity: sha512-nM1VZFHUyIfRKnzHMsXAHwwbTLdGc7dlH6DcLCpZPR4jcwD7ivVEMYHNS6HlKZLki+out9aRRAKFNQ8K5FYtQA==}
     peerDependencies:
       '@types/express': '*'
       '@types/react': '*'
@@ -4703,12 +4703,12 @@ snapshots:
   '@unrs/resolver-binding-win32-x64-msvc@1.12.2':
     optional: true
 
-  '@valbuild/cli@0.144.9(@types/react@19.3.0)(eslint@9.39.5(jiti@2.7.0))(prettier@3.9.9)(react-dom@19.2.8(react@19.2.8))(react@19.2.8)(rolldown@1.2.12)(typescript@5.9.3)':
+  '@valbuild/cli@0.144.10(@types/react@19.3.0)(eslint@9.39.5(jiti@2.7.0))(prettier@3.9.9)(react-dom@19.2.8(react@19.2.8))(react@19.2.8)(rolldown@1.2.12)(typescript@5.9.3)':
     dependencies:
       '@valbuild/core': 0.144.0
       '@valbuild/eslint-plugin': 0.125.0(eslint@9.39.5(jiti@2.7.0))(typescript@5.9.3)
-      '@valbuild/language-server': 0.144.9(@types/react@19.3.0)(react-dom@19.2.8(react@19.2.8))(react@19.2.8)
-      '@valbuild/server': 0.144.9(@types/react@19.3.0)(react-dom@19.2.8(react@19.2.8))(react@19.2.8)
+      '@valbuild/language-server': 0.144.10(@types/react@19.3.0)(react-dom@19.2.8(react@19.2.8))(react@19.2.8)
+      '@valbuild/server': 0.144.10(@types/react@19.3.0)(react-dom@19.2.8(react@19.2.8))(react@19.2.8)
       '@valbuild/shared': 0.144.9
       chalk: 6.0.1
       chokidar: 5.0.0
@@ -4738,10 +4738,10 @@ snapshots:
       eslint: 9.39.5(jiti@2.7.0)
       typescript: 5.9.3
 
-  '@valbuild/language-server@0.144.9(@types/react@19.3.0)(react-dom@19.2.8(react@19.2.8))(react@19.2.8)':
+  '@valbuild/language-server@0.144.10(@types/react@19.3.0)(react-dom@19.2.8(react@19.2.8))(react@19.2.8)':
     dependencies:
       '@valbuild/core': 0.144.0
-      '@valbuild/server': 0.144.9(@types/react@19.3.0)(react-dom@19.2.8(react@19.2.8))(react@19.2.8)
+      '@valbuild/server': 0.144.10(@types/react@19.3.0)(react-dom@19.2.8(react@19.2.8))(react@19.2.8)
       '@valbuild/shared': 0.144.9
       typescript: 6.0.3
       vscode-languageserver: 10.1.2
@@ -4752,10 +4752,10 @@ snapshots:
       - react
       - react-dom
 
-  '@valbuild/mcp@0.144.9(@types/react@19.3.0)(react-dom@19.2.8(react@19.2.8))(react@19.2.8)':
+  '@valbuild/mcp@0.144.10(@types/react@19.3.0)(react-dom@19.2.8(react@19.2.8))(react@19.2.8)':
     dependencies:
       '@valbuild/core': 0.144.0
-      '@valbuild/server': 0.144.9(@types/react@19.3.0)(react-dom@19.2.8(react@19.2.8))(react@19.2.8)
+      '@valbuild/server': 0.144.10(@types/react@19.3.0)(react-dom@19.2.8(react@19.2.8))(react@19.2.8)
       '@valbuild/shared': 0.144.9
       minimatch: 10.2.6
       zod: 4.6.5
@@ -4765,15 +4765,15 @@ snapshots:
       - react
       - react-dom
 
-  '@valbuild/next@0.144.9(@types/react@19.3.0)(next@16.4.0(@babel/core@7.29.7)(@types/node@26.4.0)(react-dom@19.2.8(react@19.2.8))(react@19.2.8))(react-dom@19.2.8(react@19.2.8))(react@19.2.8)':
+  '@valbuild/next@0.144.10(@types/react@19.3.0)(next@16.4.0(@babel/core@7.29.7)(@types/node@26.4.0)(react-dom@19.2.8(react@19.2.8))(react@19.2.8))(react-dom@19.2.8(react@19.2.8))(react@19.2.8)':
     dependencies:
       '@valbuild/core': 0.144.0
-      '@valbuild/language-server': 0.144.9(@types/react@19.3.0)(react-dom@19.2.8(react@19.2.8))(react@19.2.8)
-      '@valbuild/mcp': 0.144.9(@types/react@19.3.0)(react-dom@19.2.8(react@19.2.8))(react@19.2.8)
-      '@valbuild/react': 0.144.9(@types/react@19.3.0)(react-dom@19.2.8(react@19.2.8))(react@19.2.8)
-      '@valbuild/server': 0.144.9(@types/react@19.3.0)(react-dom@19.2.8(react@19.2.8))(react@19.2.8)
+      '@valbuild/language-server': 0.144.10(@types/react@19.3.0)(react-dom@19.2.8(react@19.2.8))(react@19.2.8)
+      '@valbuild/mcp': 0.144.10(@types/react@19.3.0)(react-dom@19.2.8(react@19.2.8))(react@19.2.8)
+      '@valbuild/react': 0.144.10(@types/react@19.3.0)(react-dom@19.2.8(react@19.2.8))(react@19.2.8)
+      '@valbuild/server': 0.144.10(@types/react@19.3.0)(react-dom@19.2.8(react@19.2.8))(react@19.2.8)
       '@valbuild/shared': 0.144.9
-      '@valbuild/ui': 0.144.9(@types/react@19.3.0)(react-dom@19.2.8(react@19.2.8))(react@19.2.8)
+      '@valbuild/ui': 0.144.10(@types/react@19.3.0)(react-dom@19.2.8(react@19.2.8))(react@19.2.8)
       client-only: 0.0.1
       next: 16.4.0(@babel/core@7.29.7)(@types/node@26.4.0)(react-dom@19.2.8(react@19.2.8))(react@19.2.8)
       react: 19.2.8
@@ -4783,11 +4783,11 @@ snapshots:
       - '@types/express'
       - '@types/react'
 
-  '@valbuild/react@0.144.9(@types/react@19.3.0)(react-dom@19.2.8(react@19.2.8))(react@19.2.8)':
+  '@valbuild/react@0.144.10(@types/react@19.3.0)(react-dom@19.2.8(react@19.2.8))(react@19.2.8)':
     dependencies:
       '@valbuild/core': 0.144.0
       '@valbuild/shared': 0.144.9
-      '@valbuild/ui': 0.144.9(@types/react@19.3.0)(react-dom@19.2.8(react@19.2.8))(react@19.2.8)
+      '@valbuild/ui': 0.144.10(@types/react@19.3.0)(react-dom@19.2.8(react@19.2.8))(react@19.2.8)
       '@vercel/stega': 1.1.0
       base64-arraybuffer: 1.0.2
       react: 19.2.8
@@ -4797,11 +4797,11 @@ snapshots:
     transitivePeerDependencies:
       - '@types/express'
 
-  '@valbuild/server@0.144.9(@types/react@19.3.0)(react-dom@19.2.8(react@19.2.8))(react@19.2.8)':
+  '@valbuild/server@0.144.10(@types/react@19.3.0)(react-dom@19.2.8(react@19.2.8))(react@19.2.8)':
     dependencies:
       '@valbuild/core': 0.144.0
       '@valbuild/shared': 0.144.9
-      '@valbuild/ui': 0.144.9(@types/react@19.3.0)(react-dom@19.2.8(react@19.2.8))(react@19.2.8)
+      '@valbuild/ui': 0.144.10(@types/react@19.3.0)(react-dom@19.2.8(react@19.2.8))(react@19.2.8)
       chokidar: 5.0.0
       image-size: 2.0.4
       minimatch: 10.2.6
@@ -4822,7 +4822,7 @@ snapshots:
       zod: 4.6.5
       zod-validation-error: 5.0.0(zod@4.6.5)
 
-  '@valbuild/ui@0.144.9(@types/react@19.3.0)(react-dom@19.2.8(react@19.2.8))(react@19.2.8)':
+  '@valbuild/ui@0.144.10(@types/react@19.3.0)(react-dom@19.2.8(react@19.2.8))(react@19.2.8)':
     dependencies:
       react: 19.2.8
       react-dom: 19.2.8(react@19.2.8)
