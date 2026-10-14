@@ -1,14 +1,14 @@
 minimumReleaseAgeExclude:
-  - "@valbuild/cli@0.144.6"
+  - "@valbuild/cli@0.144.7"
   - "@valbuild/core@0.144.0"
   - "@valbuild/eslint-plugin@0.125.0"
-  - "@valbuild/language-server@0.144.6"
-  - "@valbuild/mcp@0.144.6"
-  - "@valbuild/next@0.144.6"
-  - "@valbuild/react@0.144.6"
-  - "@valbuild/server@0.144.6"
+  - "@valbuild/language-server@0.144.7"
+  - "@valbuild/mcp@0.144.7"
+  - "@valbuild/next@0.144.7"
+  - "@valbuild/react@0.144.7"
+  - "@valbuild/server@0.144.7"
   - "@valbuild/shared@0.144.5"
-  - "@valbuild/ui@0.144.6"
+  - "@valbuild/ui@0.144.7"
 
 allowBuilds:
   "sharp": true
