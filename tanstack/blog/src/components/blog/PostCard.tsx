@@ -11,7 +11,16 @@ import { formatDate } from "./posts";
  * the link, by way of the title's link stretched over it, so the card is one
  * stop for a keyboard and a screen reader rather than three.
  */
-export function PostCard({ url, post }: { url: string; post: PostSchema }) {
+export function PostCard({
+  url,
+  post,
+  priority = false,
+}: {
+  url: string;
+  post: PostSchema;
+  /** In view when the page opens, so its cover loads first. See `Media`. */
+  priority?: boolean;
+}) {
   return (
     <Card className="relative">
       {post.cover && (
@@ -19,6 +28,7 @@ export function PostCard({ url, post }: { url: string; post: PostSchema }) {
           media={{ type: "image", image: post.cover }}
           aspect="wide"
           rounded={false}
+          priority={priority}
         />
       )}
       <CardBody>

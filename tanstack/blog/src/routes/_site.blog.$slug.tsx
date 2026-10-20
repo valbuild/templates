@@ -91,6 +91,8 @@ function PostPage() {
               media={{ type: "image", image: post.cover }}
               aspect="wide"
               className="my-10"
+              // Under the title, so in view when the post opens.
+              priority
             />
           )}
           <PostBody value={post.body} className={post.cover ? "" : "mt-10"} />

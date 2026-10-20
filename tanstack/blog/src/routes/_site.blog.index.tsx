@@ -52,8 +52,14 @@ function BlogIndex() {
             </Text>
           ) : (
             <Grid columns={3}>
-              {posts.map(({ url, post }) => (
-                <PostCard key={url} url={url} post={post} />
+              {posts.map(({ url, post }, index) => (
+                // The first row is in view when the page opens.
+                <PostCard
+                  key={url}
+                  url={url}
+                  post={post}
+                  priority={index < 3}
+                />
               ))}
             </Grid>
           )}

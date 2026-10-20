@@ -11,7 +11,7 @@ export function HomeSection({
   priority?: boolean;
 }) {
   if (section.type === "latest-posts") {
-    return <LatestPostsSection {...section} />;
+    return <LatestPostsSection {...section} priority={priority} />;
   }
   return <AnySection section={section} priority={priority} />;
 }
