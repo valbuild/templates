@@ -77,7 +77,11 @@ function ProductPage() {
   return (
     <main>
       {pageContent.sections.map((section, index) => (
-        <AnySection key={`${section.type}-${index}`} section={section} />
+        <AnySection
+          key={`${section.type}-${index}`}
+          section={section}
+          priority={index === 0}
+        />
       ))}
     </main>
   );

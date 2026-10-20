@@ -15,15 +15,24 @@ export function LatestPostsSection({
   intro,
   count,
   surface,
-}: LatestPostsSectionSchema) {
+  priority = false,
+}: LatestPostsSectionSchema & {
+  /** The page's first section: its first row of covers loads first. */
+  priority?: boolean;
+}) {
   const posts = newestFirst(useVal(postsVal)).slice(0, count);
   return (
     <Section surface={surface}>
       <Stack gap="lg">
         <SectionHeader eyebrow={eyebrow} title={title} intro={intro} />
         <Grid columns={3}>
-          {posts.map(({ url, post }) => (
-            <PostCard key={url} url={url} post={post} />
+          {posts.map(({ url, post }, index) => (
+            <PostCard
+              key={url}
+              url={url}
+              post={post}
+              priority={priority && index < 3}
+            />
           ))}
         </Grid>
         <TextLink href="/blog" className="self-start">

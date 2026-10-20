@@ -2,9 +2,16 @@ import { AnySection } from "../sections/AnySection";
 import type { HomeSectionSchema } from "./homeSection.val";
 import { LatestPostsSection } from "./LatestPostsSection";
 
-export function HomeSection({ section }: { section: HomeSectionSchema }) {
+/** `priority` for the page's first section; see `AnySection`. */
+export function HomeSection({
+  section,
+  priority = false,
+}: {
+  section: HomeSectionSchema;
+  priority?: boolean;
+}) {
   if (section.type === "latest-posts") {
-    return <LatestPostsSection {...section} />;
+    return <LatestPostsSection {...section} priority={priority} />;
   }
-  return <AnySection section={section} />;
+  return <AnySection section={section} priority={priority} />;
 }

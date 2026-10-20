@@ -12,7 +12,14 @@ export function MediaCarouselSection({
   intro,
   slides,
   surface,
-}: MediaCarouselSectionSchema) {
+  priority,
+}: MediaCarouselSectionSchema & {
+  /**
+   * In view when the page opens -- the page's first section -- so its media
+   * loads first instead of lazily. See `Media`.
+   */
+  priority?: boolean;
+}) {
   return (
     <Section surface={surface}>
       <Stack gap="lg">
@@ -23,6 +30,8 @@ export function MediaCarouselSection({
               <Media
                 media={{ type: "image", image: slide.image }}
                 aspect="landscape"
+                // Only the first slide is in view; the rest are scrolled to.
+                priority={priority && index === 0}
               />
               {slide.caption && (
                 <figcaption>
