@@ -24,7 +24,14 @@ export function CardGridSection({
   columns,
   cards,
   surface,
-}: CardGridSectionSchema) {
+  priority,
+}: CardGridSectionSchema & {
+  /**
+   * In view when the page opens -- the page's first section -- so its media
+   * loads first instead of lazily. See `Media`.
+   */
+  priority?: boolean;
+}) {
   return (
     <Section surface={surface}>
       <Stack gap="lg">
@@ -37,6 +44,7 @@ export function CardGridSection({
                   media={{ type: "image", image: card.image }}
                   aspect="landscape"
                   rounded={false}
+                  priority={priority}
                 />
               )}
               <CardBody>

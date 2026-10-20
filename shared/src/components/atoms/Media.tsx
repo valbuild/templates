@@ -22,12 +22,20 @@ const ASPECT: Record<MediaAspect, string> = {
  *
  * Videos play muted and looping, as a moving picture; a video meant to be
  * WATCHED, with controls and sound, is a different component.
+ *
+ * Images load lazily unless `priority` is set. React preloads every `<img>`
+ * without `loading="lazy"` from the page's `<head>`, so a page of cards and a
+ * carousel competed with what is actually in view for the first second of the
+ * network. A lazy image that IS in view is worse still -- the browser waits for
+ * layout before fetching it -- so the page's first section passes `priority`
+ * down (`AnySection`), and a hero always does.
  */
 export function Media({
   media,
   aspect = "auto",
   rounded = true,
   fill = false,
+  priority = false,
   className,
 }: {
   media: MediaSchema;
@@ -35,6 +43,8 @@ export function Media({
   rounded?: boolean;
   /** Cover the nearest positioned parent, as a background. Ignores `aspect`. */
   fill?: boolean;
+  /** In view when the page opens: load it first rather than lazily. */
+  priority?: boolean;
   className?: string;
 }) {
   const classes = cn(
@@ -52,7 +62,12 @@ export function Media({
       )}
     >
       {media.type === "image" ? (
-        <ValImage src={media.image} className={classes} />
+        <ValImage
+          src={media.image}
+          className={classes}
+          loading={priority ? "eager" : "lazy"}
+          fetchPriority={priority ? "high" : undefined}
+        />
       ) : (
         <ValVideo
           src={media.video}

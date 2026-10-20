@@ -28,7 +28,11 @@ export default async function ProductPage({ params }: Props) {
   return (
     <main>
       {page.sections.map((section, index) => (
-        <AnySection key={`${section.type}-${index}`} section={section} />
+        <AnySection
+          key={`${section.type}-${index}`}
+          section={section}
+          priority={index === 0}
+        />
       ))}
     </main>
   );

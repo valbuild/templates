@@ -12,7 +12,14 @@ export function ImageTextSection({
   title,
   text,
   surface,
-}: ImageTextSectionSchema) {
+  priority,
+}: ImageTextSectionSchema & {
+  /**
+   * In view when the page opens -- the page's first section -- so its media
+   * loads first instead of lazily. See `Media`.
+   */
+  priority?: boolean;
+}) {
   return (
     <Section surface={surface}>
       <Grid columns={image ? 2 : 1} gap="lg" className="items-center">
@@ -20,6 +27,7 @@ export function ImageTextSection({
           <Media
             media={{ type: "image", image }}
             aspect="landscape"
+            priority={priority}
             className={imageSide === "right" ? "sm:order-last" : undefined}
           />
         )}

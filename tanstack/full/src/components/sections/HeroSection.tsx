@@ -27,7 +27,13 @@ export function HeroSection({
     >
       {background && (
         <>
-          <Media media={background} fill rounded={false} className="-z-20" />
+          <Media
+            media={background}
+            fill
+            priority
+            rounded={false}
+            className="-z-20"
+          />
           <div
             aria-hidden
             className="absolute inset-0 -z-10 bg-[linear-gradient(to_top,rgb(0_0_0/0.75),rgb(0_0_0/0.35))]"

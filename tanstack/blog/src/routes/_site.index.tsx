@@ -1,12 +1,42 @@
 import { createFileRoute } from "@tanstack/react-router";
+import { createServerFn } from "@tanstack/react-start";
+import { val } from "../../val.config";
 import { NotFound } from "../components/NotFound";
 import { HomeSection } from "../components/blog/HomeSection";
 import { useValRoute } from "../val/val.hooks";
+import { fetchValRoute } from "../val/val.server";
 import pageVal from "./_site.index.val";
 
+/**
+ * The page's title and meta description, read on the server.
+ *
+ * `head` runs before the component, so this is a server read, and through
+ * `createServerFn` for the reason `val.server.ts` gives: a route loader runs
+ * in the browser too. Without it the page has no meta description, which
+ * search engines show under the link and Lighthouse's SEO audit fails.
+ */
+const getMeta = createServerFn().handler(async () => {
+  const page = await fetchValRoute(pageVal, {});
+  if (!page) {
+    return null;
+  }
+  // `val.raw`: this ends up in `<title>` and `<meta>`, where the edit tags
+  // that make a string click-to-editable are noise.
+  return {
+    title: val.raw(page.meta.title),
+    description: val.raw(page.meta.description),
+  };
+});
+
 export const Route = createFileRoute("/_site/")({
-  head: () => ({
-    meta: [{ title: "Home" }],
+  loader: () => getMeta(),
+  head: ({ loaderData }) => ({
+    meta: [
+      { title: loaderData?.title ?? "Home" },
+      ...(loaderData?.description
+        ? [{ name: "description", content: loaderData.description }]
+        : []),
+    ],
     links: [
       {
         rel: "alternate",
@@ -44,7 +74,11 @@ function Home() {
   return (
     <main>
       {pageContent.sections.map((section, index) => (
-        <HomeSection key={`${section.type}-${index}`} section={section} />
+        <HomeSection
+          key={`${section.type}-${index}`}
+          section={section}
+          priority={index === 0}
+        />
       ))}
     </main>
   );
