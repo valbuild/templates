@@ -1,15 +1,15 @@
 minimumReleaseAgeExclude:
-  - "@valbuild/cli@0.148.0"
-  - "@valbuild/core@0.148.0"
+  - "@valbuild/cli@0.148.7"
+  - "@valbuild/core@0.148.7"
   - "@valbuild/eslint-plugin@0.125.0"
-  - "@valbuild/language-server@0.148.0"
-  - "@valbuild/mcp@0.148.0"
-  - "@valbuild/react@0.148.0"
-  - "@valbuild/server@0.148.0"
-  - "@valbuild/shared@0.148.0"
-  - "@valbuild/tanstack-build@0.148.0"
-  - "@valbuild/tanstack@0.148.0"
-  - "@valbuild/ui@0.148.0"
+  - "@valbuild/language-server@0.148.7"
+  - "@valbuild/mcp@0.148.7"
+  - "@valbuild/react@0.148.7"
+  - "@valbuild/server@0.148.7"
+  - "@valbuild/shared@0.148.7"
+  - "@valbuild/tanstack-build@0.148.5"
+  - "@valbuild/tanstack@0.148.7"
+  - "@valbuild/ui@0.148.7"
 
 allowBuilds:
   "esbuild": true
