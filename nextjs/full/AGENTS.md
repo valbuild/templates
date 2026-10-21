@@ -20,6 +20,9 @@ edited either here or in Val Studio at `/val`.
   (helpers), `nextAppRouter`.
 - `val.modules.ts` — **every module has to be registered here.** A module that
   is not in this list does not exist as far as the Studio is concerned.
+- `settings.val.ts` — the project's settings (`s.settings()`): the assistant,
+  the Studio's colours and logo, the languages the site is in. `{}` to start;
+  editors fill it in under Settings in the Studio.
 - `src/app/(main)/**/page.val.ts` — a page's content, a router module beside
   the page it serves, keyed by the URLs that page serves.
 - `src/components/**/*.val.ts` — the schemas of the components a page is built
