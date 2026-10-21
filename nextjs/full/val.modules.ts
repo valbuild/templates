@@ -7,6 +7,9 @@ export default modules(config, [
   //
   // A page's content sits beside the page it serves, and its keys are the
   // URLs that page serves.
+  //
+  // The project's settings: one per project, at the root of the content tree.
+  { def: () => import("./settings.val") },
   { def: () => import("./src/theme/theme.val") },
   // The media libraries: every image, video and file on the site.
   { def: () => import("./src/media/images.val") },
