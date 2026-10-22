@@ -33,6 +33,7 @@
     "@valbuild/core": "0.148.7",
     "@valbuild/mcp": "0.149.1",
     "@valbuild/tanstack": "0.149.1",
+    "@valbuild/ui": "0.149.1",
     "mcp-handler": "^2.1.1",
     "prettier": "^3.9.6",
     "react": "^19.2.0",
