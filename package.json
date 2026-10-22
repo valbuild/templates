@@ -9,6 +9,7 @@
     "app-config:check": "node scripts/app-config.mjs --check",
     "release-age": "node scripts/release-age.mjs",
     "release-age:check": "node scripts/release-age.mjs --check",
+    "studio-ui:check": "node scripts/studio-ui.mjs --check",
     "install:check": "node scripts/install-check.mjs"
   },
   "engines": {

@@ -22,6 +22,7 @@ jobs:
       - run: node scripts/catalog.mjs --check
       - run: node scripts/app-config.mjs --check
       - run: node scripts/release-age.mjs --check
+      - run: node scripts/studio-ui.mjs --check
 
   # A fresh `pnpm install` of every template, as a person who just created a
   # project runs it: an empty store, no --frozen-lockfile, and every pnpm they

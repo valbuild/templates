@@ -32,6 +32,12 @@ The rules that are easy to break:
   otherwise). After installing, run `node scripts/release-age.mjs` to rewrite
   the lists, and `node scripts/install-check.mjs` to install every template
   fresh, as a person who has just created a project does.
+- **A mirrored template declares `@valbuild/ui` itself**, at the version its
+  `@valbuild/tanstack` depends on, so bumping one means bumping the other. The
+  platform declares it for any project that does not (`wireUp` in
+  `@valbuild/tanstack-build`), and a site whose `package.json` then differs
+  from its template's gets no lockfile from it. `node scripts/studio-ui.mjs
+--check` says when they disagree.
 - **Packages allowed to run build scripts go in `allowBuilds` in the
   template's `pnpm-workspace.yaml`**, not in `package.json`. pnpm 11 ignores
   `pnpm.onlyBuiltDependencies` there and fails the install on an unapproved
@@ -48,7 +54,7 @@ pnpm run typecheck && pnpm run lint && pnpm exec prettier --check . \
 
 For a Minimal template, the same without `test` and `build-storybook`.
 
-And from the root, always: `node scripts/sync.mjs --check && node scripts/catalog.mjs --check && node scripts/app-config.mjs --check && node scripts/release-age.mjs --check`.
+And from the root, always: `node scripts/sync.mjs --check && node scripts/catalog.mjs --check && node scripts/app-config.mjs --check && node scripts/release-age.mjs --check && node scripts/studio-ui.mjs --check`.
 After a change to a template's dependencies or its `pnpm-workspace.yaml`, also
 `node scripts/install-check.mjs` (a few minutes: it installs every template with
 pnpm 10, 11 and the latest).
