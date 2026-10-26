@@ -1,17 +1,22 @@
 minimumReleaseAgeExclude:
-  - "@valbuild/cli@0.149.4"
+  - "@valbuild/cli@0.150.0"
   - "@valbuild/core@0.148.7"
   - "@valbuild/eslint-plugin@0.125.0"
-  - "@valbuild/language-server@0.149.4"
-  - "@valbuild/mcp@0.149.4"
-  - "@valbuild/react@0.149.4"
-  - "@valbuild/server@0.149.4"
-  - "@valbuild/shared@0.148.7"
+  - "@valbuild/language-server@0.150.0"
+  - "@valbuild/mcp@0.150.0"
+  - "@valbuild/react@0.150.0"
+  - "@valbuild/server@0.150.0"
+  - "@valbuild/shared@0.149.7"
   - "@valbuild/tanstack-build@0.149.2"
-  - "@valbuild/tanstack@0.149.4"
-  - "@valbuild/ui@0.149.4"
+  - "@valbuild/tanstack@0.150.0"
+  - "@valbuild/ui@0.150.0"
 
 allowBuilds:
   "esbuild": true
   "lightningcss": true
   "sharp": true
+
+# solid-js before 1.9.16 pins seroval 1.5, which has a critical advisory;
+# it comes in through @tanstack/react-devtools.
+overrides:
+  "solid-js": "^1.9.17"

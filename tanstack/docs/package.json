@@ -31,21 +31,21 @@
     "@tanstack/react-router-devtools": "^1.167.2",
     "@tanstack/react-start": "^1.168.60",
     "@valbuild/core": "0.148.7",
-    "@valbuild/mcp": "0.149.4",
-    "@valbuild/tanstack": "0.149.4",
-    "@valbuild/ui": "0.149.4",
+    "@valbuild/mcp": "0.150.0",
+    "@valbuild/tanstack": "0.150.0",
+    "@valbuild/ui": "0.150.0",
     "mcp-handler": "^2.1.1",
     "prettier": "^3.9.6",
     "react": "^19.2.0",
     "react-dom": "^19.2.0",
     "sharp": "^0.35.4",
     "tailwindcss": "^4.1.18",
-    "zod": "^4.4.3"
+    "zod": "^4.6.7"
   },
   "devDependencies": {
     "@eslint/js": "^10.0.1",
-    "@storybook/react": "^10.6.1",
-    "@storybook/react-vite": "^10.6.1",
+    "@storybook/react": "^10.6.3",
+    "@storybook/react-vite": "^10.6.3",
     "@tanstack/devtools-vite": "^0.8.5",
     "@tanstack/router-cli": "^1.167.40",
     "@tanstack/router-generator": "^1.167.40",
@@ -53,17 +53,17 @@
     "@types/node": "^22.10.2",
     "@types/react": "^19.2.0",
     "@types/react-dom": "^19.2.0",
-    "@valbuild/cli": "0.149.4",
+    "@valbuild/cli": "0.150.0",
     "@valbuild/eslint-plugin": "0.125.0",
     "@valbuild/tanstack-build": "0.149.2",
     "@vitejs/plugin-react": "^6.0.1",
     "eslint": "^10.10.0",
     "rolldown": "^1.2.11",
-    "storybook": "^10.6.1",
+    "storybook": "^10.6.3",
     "tsx": "^4.23.15",
     "typescript": "^6.0.2",
     "typescript-eslint": "^8.48.0",
-    "vite": "^8.0.0"
+    "vite": "^8.3.5"
   },
   "engines": {
     "node": "^22.13.0 || >=23.5.0"
