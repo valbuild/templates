@@ -15,3 +15,8 @@ allowBuilds:
   "esbuild": true
   "lightningcss": true
   "sharp": true
+
+# solid-js before 1.9.16 pins seroval 1.5, which has a critical advisory;
+# it comes in through @tanstack/react-devtools.
+overrides:
+  "solid-js": "^1.9.17"
