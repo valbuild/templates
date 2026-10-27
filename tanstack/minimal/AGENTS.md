@@ -50,6 +50,11 @@ that must happen during the request. When you do, it **must** go through
   wherever a string must be exact: a URL, a `key`, a comparison, `<title>`.
 - There is no CSS framework: `src/styles.css` holds the few global rules, and
   the example page styles itself inline. Add whatever styling you prefer.
+- `.env.development` turns on content analytics under `npm run dev`, so the
+  browser console warns about content whose invisible edit tag left React (a
+  `<title>`, JSON-LD, a share link). Fix it with `val.raw()` where the value
+  leaves React, not by turning analytics off. On Val's hosting, analytics is
+  switched on in the project's settings.
 - Run `npm run validate` after changing content. It type-checks the content
   against the schemas and fixes what it can.
 
