@@ -1,14 +1,14 @@
 minimumReleaseAgeExclude:
-  - "@valbuild/cli@0.150.2"
-  - "@valbuild/core@0.150.2"
+  - "@valbuild/cli@0.150.3"
+  - "@valbuild/core@0.150.3"
   - "@valbuild/eslint-plugin@0.125.0"
-  - "@valbuild/language-server@0.150.2"
-  - "@valbuild/mcp@0.150.2"
-  - "@valbuild/next@0.150.2"
-  - "@valbuild/react@0.150.2"
-  - "@valbuild/server@0.150.2"
-  - "@valbuild/shared@0.150.2"
-  - "@valbuild/ui@0.150.2"
+  - "@valbuild/language-server@0.150.3"
+  - "@valbuild/mcp@0.150.3"
+  - "@valbuild/next@0.150.3"
+  - "@valbuild/react@0.150.3"
+  - "@valbuild/server@0.150.3"
+  - "@valbuild/shared@0.150.3"
+  - "@valbuild/ui@0.150.3"
 
 allowBuilds:
   "@tailwindcss/oxide": true
