@@ -4,11 +4,11 @@ minimumReleaseAgeExclude:
   - "@valbuild/eslint-plugin@0.125.0"
   - "@valbuild/language-server@0.150.5"
   - "@valbuild/mcp@0.150.5"
-  - "@valbuild/react@0.150.6"
+  - "@valbuild/react@0.150.7"
   - "@valbuild/server@0.150.5"
   - "@valbuild/shared@0.150.3"
   - "@valbuild/tanstack-build@0.150.1"
-  - "@valbuild/tanstack@0.150.6"
+  - "@valbuild/tanstack@0.150.7"
   - "@valbuild/ui@0.150.5"
 
 allowBuilds:

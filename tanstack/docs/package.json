@@ -32,7 +32,7 @@
     "@tanstack/react-start": "^1.168.60",
     "@valbuild/core": "0.150.3",
     "@valbuild/mcp": "0.150.5",
-    "@valbuild/tanstack": "0.150.6",
+    "@valbuild/tanstack": "0.150.7",
     "@valbuild/ui": "0.150.5",
     "mcp-handler": "^2.1.1",
     "prettier": "^3.9.6",

@@ -14,7 +14,7 @@
     "@modelcontextprotocol/server": "^2.0.0",
     "@valbuild/core": "0.150.3",
     "@valbuild/mcp": "0.150.5",
-    "@valbuild/next": "0.150.6",
+    "@valbuild/next": "0.150.7",
     "mcp-handler": "^2.1.1",
     "next": "16.4.3",
     "prettier": "^3.9.6",
