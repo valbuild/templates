@@ -7,7 +7,16 @@ import tailwindcss from "@tailwindcss/vite";
 const config = defineConfig({
   resolve: { tsconfigPaths: true },
   plugins: [
-    devtools(),
+    devtools({
+      /*
+       * Vite already forwards the browser's console to the terminal, which is
+       * where Val's development warnings should be read. The devtools' own
+       * piping on top of it sends every browser warning round in a loop --
+       * the terminal's copy is piped back to the browser, which forwards it
+       * again -- dozens of times a second for as long as the tab is open.
+       */
+      consolePiping: { enabled: false },
+    }),
     tailwindcss(),
     tanstackStart({
       /*

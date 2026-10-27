@@ -52,6 +52,11 @@ that must happen during the request. When you do, it **must** go through
   content file needs no change there; removing that setting breaks the build.
 - Every page of the site goes under the `_site` layout. `__root.tsx` is the
   shell for `/val` too, so nothing site-specific belongs in it.
+- `.env.development` turns on content analytics under `npm run dev`, so the
+  browser console warns about content whose invisible edit tag left React (a
+  `<title>`, JSON-LD, a share link). Fix it with `val.raw()` where the value
+  leaves React, not by turning analytics off. On Val's hosting, analytics is
+  switched on in the project's settings.
 - Run `npm run validate` after changing content. It type-checks the content
   against the schemas and fixes what it can.
 
