@@ -7,7 +7,7 @@ minimumReleaseAgeExclude:
   - "@valbuild/react@0.150.10"
   - "@valbuild/server@0.150.10"
   - "@valbuild/shared@0.150.10"
-  - "@valbuild/tanstack-build@0.150.1"
+  - "@valbuild/tanstack-build@0.150.9"
   - "@valbuild/tanstack@0.150.10"
   - "@valbuild/ui@0.150.10"
 

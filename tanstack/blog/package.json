@@ -55,7 +55,7 @@
     "@types/react-dom": "^19.2.0",
     "@valbuild/cli": "0.150.10",
     "@valbuild/eslint-plugin": "0.125.0",
-    "@valbuild/tanstack-build": "0.150.1",
+    "@valbuild/tanstack-build": "0.150.9",
     "@vitejs/plugin-react": "^6.0.1",
     "eslint": "^10.10.0",
     "rolldown": "^1.2.11",
