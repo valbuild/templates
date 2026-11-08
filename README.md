@@ -191,6 +191,30 @@ it exists to catch:
 To publish the mirrors again by hand, use Actions → _Mirror templates and
 reseed_ → **Run workflow**. It always publishes `main`.
 
+### A new project's settings
+
+Every template's `settings.val.ts` is `{}`, because nothing in it is true of
+every project. Some things are true of ONE project from the moment it is made,
+though, because the person making it said so on admin.val.build/new: a project
+made with an AI key (or in an org that shares one) starts with
+`assistant: { enabled: true }`, so nobody is asked to turn on an assistant
+they already brought a key for.
+
+valbuild/home writes that into the template's settings module as the project
+is made: in the site's copy on the platform, which it also serves from the
+start, and in the GitHub repository made from the mirror, in the same commit
+that names the Val project (`types/src/projectSettings.ts` there). Like
+`scripts/app-config.mjs`, it edits text, and refuses what it cannot read
+plainly, so a template keeps:
+
+- its settings module at `settings.val.ts` (or `src/settings.val.ts`), defined
+  with `c.define("/settings.val.ts", s.settings(), { ... })`;
+- its Source a plain object literal: keys, strings, numbers, booleans, `null`,
+  arrays and objects of those. No comments, variables or spreads inside it.
+
+A template that does not is still made, without the setting, and the Studio
+asks instead.
+
 ## Adding a template
 
 1. Make the folder a complete project (copying the closest template is

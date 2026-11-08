@@ -22,6 +22,13 @@ The rules that are easy to break:
   `npm create @valbuild` projects keep their media locally; the Val app needs
   it remote, so `scripts/mirror.sh` adds it to the mirrors that admin.val.build
   copies (`scripts/app-config.mjs`). See README.md, "The mirrors".
+- **Keep `settings.val.ts` at the top of a template, and its Source a plain
+  object literal** (`{}`, or keys and literal values). admin.val.build/new
+  writes the settings a project starts with into it, in the site and in the
+  repository made from the mirror (the assistant on, for a project made with
+  AI). That edit refuses a comment, a variable or a spread inside the object,
+  and the repository's copy is looked for at `settings.val.ts` or
+  `src/settings.val.ts`. See README.md, "A new project's settings".
 - **A change to `shared/` lands in both Full templates** (TanStack and Next.js).
   Check it in both. A shared component with state needs `"use client"` for
   Next.js; one that imports `next/*` or `@tanstack/*` breaks the other.
