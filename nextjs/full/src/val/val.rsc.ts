@@ -8,10 +8,11 @@ const {
   fetchValStega: fetchVal,
   fetchValRouteStega: fetchValRoute,
   fetchValRouteUrl,
+  fetchValDraft,
 } = initValRsc(config, valModules, {
   draftMode,
   headers,
   cookies,
 });
 
-export { fetchVal, fetchValRoute, fetchValRouteUrl };
+export { fetchVal, fetchValRoute, fetchValRouteUrl, fetchValDraft };
