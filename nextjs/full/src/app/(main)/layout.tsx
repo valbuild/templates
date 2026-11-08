@@ -2,7 +2,7 @@ import type { Metadata } from "next";
 import { ValProvider } from "@valbuild/next";
 import { config, val } from "../../../val.config";
 import { ValModulesClient } from "../ValModulesClient";
-import { fetchVal } from "@/val/val.rsc";
+import { fetchVal, fetchValDraft } from "@/val/val.rsc";
 import themeVal from "@/theme/theme.val";
 import { resolveTheme } from "@/theme/resolveTheme";
 import { ThemeRoot } from "@/theme/ThemeRoot";
@@ -45,8 +45,14 @@ export default async function SiteLayout({
         {/*
          * Everything the site renders goes inside ValProvider: it mounts the
          * Studio overlay and refreshes the page when an edit lands.
+         *
+         * `draft` is the editor's unpublished draft, read on the server for
+         * this request, so a client component (`useVal` from
+         * `@/val/val.client`) renders the draft from the first byte instead
+         * of the published text first. It is `null` for a visitor, after one
+         * `draftMode()` lookup that does not make the page dynamic.
          */}
-        <ValProvider config={config}>
+        <ValProvider config={config} draft={await fetchValDraft()}>
           {/* Hands the Studio your schemas. Needed here AND on /val. */}
           <ValModulesClient />
           <ThemeRoot theme={theme} className="flex min-h-screen flex-col">
