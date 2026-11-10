@@ -1,4 +1,12 @@
 minimumReleaseAgeExclude:
+  - "@valbuild/cli@0.152.2"
+  - "@valbuild/language-server@0.152.2"
+  - "@valbuild/mcp@0.152.2"
+  - "@valbuild/react@0.152.2"
+  - "@valbuild/server@0.152.2"
+  - "@valbuild/shared@0.152.2"
+  - "@valbuild/tanstack@0.152.2"
+  - "@valbuild/ui@0.152.2"
   - "@valbuild/cli@0.152.1"
   - "@valbuild/core@0.151.0"
   - "@valbuild/eslint-plugin@0.150.13"
