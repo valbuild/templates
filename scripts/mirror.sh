@@ -1,6 +1,6 @@
 #!/usr/bin/env bash
-# Publishes each folder in mirrors.json as its own repository, then asks
-# valbuild/home to reseed.
+# Stages each folder in mirrors.json on its own repository's `next` branch,
+# then asks valbuild/home to reseed from exactly those commits.
 #
 #   MIRROR_TOKEN=... GH_TOKEN=... scripts/mirror.sh
 #
@@ -8,16 +8,21 @@
 # repository, so `/new`'s "code on GitHub" cannot copy one folder of this one.
 # Each mirror is an ordinary template repository that GitHub can copy.
 #
-# Why the reseed waits for the mirrors: valbuild/home seeds `/new`'s sites from
-# the MIRRORS, not from this repository, so that the site a new project serves
-# and the code it is given on GitHub are the same commit. So the reseed is
-# asked for only after every mirror push has succeeded. A mirror that failed
-# to push fails this run, and the reseed is not asked for at all -- a seed
-# built from a mirror that is behind is the bug this ordering exists to stop.
+# Why `next` and not `main`: /new copies a project's code with GitHub's
+# `/generate`, which copies a template repository's `main` at whatever commit
+# it is at and cannot be given another. Its site is copied from a seed
+# valbuild/home builds. Pushing to `main` here gave new projects the new code
+# with the old site until the reseed finished -- and for good, if it failed.
+# So this pushes to `next`, valbuild/home builds the seed from the commit
+# named here, and only once that seed is published does home ask
+# `promote-mirror.yml` (scripts/promote.sh) to move that mirror's `main` to it.
+# Nothing here ever touches `main`.
 #
-# The reseed is asked for even when no mirror moved. That is what lets a
-# re-run of a run whose dispatch failed finish the job, and home's reseed
-# costs one `git ls-remote` per template when nothing moved.
+# The reseed is asked for only after every mirror push has succeeded, and
+# names every mirror's `next`, moved or not: home skips what it already built,
+# and a newer request replaces an older one still waiting there, so each
+# request has to describe all of them. That is also what lets a re-run of a
+# run whose dispatch failed finish the job.
 #
 # MIRROR_TOKEN pushes to the mirrors (Contents and Workflows, write: each
 # mirror carries the template's `.github/workflows`). GH_TOKEN starts the
@@ -46,20 +51,29 @@ subject=$(git log -1 --format=%s)
 base="${MIRROR_BASE:-https://x-access-token:${MIRROR_TOKEN}@github.com}"
 work=$(mktemp -d)
 trap 'rm -rf "$work"' EXIT
-
-node -e '
+staged=()
+# Read first, so a mirrors.json node cannot parse fails the run here rather
+# than leaving the loop below with nothing to do.
+mirrors=$(node -e '
   const { mirrors } = require("./mirrors.json");
   for (const [folder, repo] of Object.entries(mirrors)) console.log(folder, repo);
-' | while read -r folder repo; do
+')
+
+while read -r folder repo; do
   dir="$work/${repo//\//_}"
-  git clone --quiet --depth 1 \
-    "$base/${repo}.git" "$dir"
-  # `main` by name, not whatever the default branch is: it is the branch this
-  # pushes to. A mirror with no `main` yet (just created, empty) starts one.
-  if git -C "$dir" ls-remote --exit-code origin refs/heads/main >/dev/null; then
-    git -C "$dir" fetch --quiet --depth 1 origin main
-    git -C "$dir" checkout --quiet -B main FETCH_HEAD
-  fi
+  git init --quiet "$dir"
+  git -C "$dir" remote add origin "$base/${repo}.git"
+  # On top of `next`, which is `main` plus whatever is waiting for a seed.
+  # Before a mirror has a `next` (the first run of this script), on top of
+  # `main`. A mirror with neither (just created, empty) starts with one commit,
+  # and gets a `main` when its first seed is built.
+  for from in next main; do
+    if git -C "$dir" ls-remote --exit-code origin "refs/heads/$from" >/dev/null; then
+      git -C "$dir" fetch --quiet --depth 1 origin "$from"
+      git -C "$dir" checkout --quiet -B next FETCH_HEAD
+      break
+    fi
+  done
   # A mirror holds the folder as committed here and nothing else: what is gone
   # from the folder goes from the mirror, and nothing untracked comes along.
   find "$dir" -mindepth 1 -maxdepth 1 ! -name .git -exec rm -rf {} +
@@ -70,16 +84,20 @@ node -e '
   # keeps its media in its own repository. See scripts/app-config.mjs.
   node scripts/app-config.mjs "$dir"
   git -C "$dir" add -A
-  if git -C "$dir" diff --cached --quiet; then
+  if git -C "$dir" diff --cached --quiet && git -C "$dir" rev-parse -q --verify HEAD >/dev/null; then
     echo "unchanged  $repo"
-    continue
+  else
+    git -C "$dir" -c user.name="Val templates" -c user.email="templates@val.build" \
+      commit --quiet -m "$subject" \
+      -m "From valbuild/templates@${source_sha} ($folder). This repository is published from there and overwritten on every push: change it in valbuild/templates."
+    echo "staged     $repo  ($(git -C "$dir" rev-parse --short=8 HEAD))"
   fi
-  git -C "$dir" -c user.name="Val templates" -c user.email="templates@val.build" \
-    commit --quiet -m "$subject" \
-    -m "From valbuild/templates@${source_sha} ($folder). This repository is published from there and overwritten on every push: change it in valbuild/templates."
-  git -C "$dir" push --quiet origin HEAD:main
-  echo "pushed     $repo  ($(git -C "$dir" rev-parse --short=8 HEAD))"
-done
+  # Unchanged too: the first run gives every mirror its `next`. Never forced:
+  # a `next` that moved since it was fetched fails the run rather than being
+  # thrown away.
+  git -C "$dir" push --quiet origin HEAD:refs/heads/next
+  staged+=("${repo}@$(git -C "$dir" rev-parse HEAD)")
+done <<<"$mirrors"
 
 # The REST call, not `gh workflow run`: without `--ref` that asks GraphQL for
 # home's default branch, which an "Actions: read and write" token is not
@@ -87,5 +105,6 @@ done
 gh api --method POST \
   repos/valbuild/home/actions/workflows/reseed-templates.yml/dispatches \
   -f ref=main \
-  -f "inputs[source]=valbuild/templates@${source_sha}"
-echo "asked valbuild/home to reseed"
+  -f "inputs[source]=valbuild/templates@${source_sha}" \
+  -f "inputs[commits]=${staged[*]}"
+echo "asked valbuild/home to reseed: ${staged[*]}"
