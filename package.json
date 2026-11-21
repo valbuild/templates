@@ -10,6 +10,8 @@
     "release-age": "node scripts/release-age.mjs",
     "release-age:check": "node scripts/release-age.mjs --check",
     "studio-ui:check": "node scripts/studio-ui.mjs --check",
+    "codemap": "node scripts/codemap.mjs",
+    "codemap:check": "node scripts/codemap.mjs --check",
     "install:check": "node scripts/install-check.mjs"
   },
   "engines": {
