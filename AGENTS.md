@@ -45,6 +45,14 @@ The rules that are easy to break:
   `@valbuild/tanstack-build`), and a site whose `package.json` then differs
   from its template's gets no lockfile from it. `node scripts/studio-ui.mjs
 --check` says when they disagree.
+- **The code map in a template's `AGENTS.md` is generated.** The part between
+  `<!-- val:codemap:start -->` and `<!-- val:codemap:end -->` is written by
+  `node scripts/codemap.mjs` from the template's files; run it after adding,
+  moving or renaming a route, a section, a component or a content module. The
+  recipes under it are hand-written, and `--check` fails any path they name
+  that does not exist (a file yet to be made is written with a placeholder,
+  `<name>`). The Val Studio reads that file into its assistant's prompt and
+  cuts it at 20,000 characters: keep it under 12,000 where you can.
 - **Packages allowed to run build scripts go in `allowBuilds` in the
   template's `pnpm-workspace.yaml`**, not in `package.json`. pnpm 11 ignores
   `pnpm.onlyBuiltDependencies` there and fails the install on an unapproved
@@ -61,7 +69,7 @@ pnpm run typecheck && pnpm run lint && pnpm exec prettier --check . \
 
 For a Minimal template, the same without `test` and `build-storybook`.
 
-And from the root, always: `node scripts/sync.mjs --check && node scripts/catalog.mjs --check && node scripts/app-config.mjs --check && node scripts/release-age.mjs --check && node scripts/studio-ui.mjs --check`.
+And from the root, always: `node scripts/sync.mjs --check && node scripts/catalog.mjs --check && node scripts/app-config.mjs --check && node scripts/release-age.mjs --check && node scripts/studio-ui.mjs --check && node scripts/codemap.mjs --check`.
 After a change to a template's dependencies or its `pnpm-workspace.yaml`, also
 `node scripts/install-check.mjs` (a few minutes: it installs every template with
 pnpm 10, 11 and the latest).

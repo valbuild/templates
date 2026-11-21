@@ -19,6 +19,7 @@ scripts/mirror.sh    publishes them, then has valbuild/home reseed
 scripts/app-config.mjs  turns on remote media in each mirror's val.config.ts
 catalog/             the icons and screenshots the catalog points at
 scripts/catalog.mjs  checks catalog.json against the templates
+scripts/codemap.mjs  writes the code map in each template's AGENTS.md
 ```
 
 Planned: `blog` and `docs` on Next.js.
@@ -126,6 +127,46 @@ VAL_TEMPLATES_REF=my-branch npm create @valbuild@latest
 
 Screenshots are 1440×900, of the home page with nothing edited, in light and
 dark, from a production build.
+
+## Each template's AGENTS.md, and its code map
+
+A template's `AGENTS.md` ships with the project, for whoever changes its code:
+a developer's own agent, and the Val Studio's assistant, which reads
+`AGENTS.md`, `CLAUDE.md` and `.claude/CLAUDE.md` from the project's root into
+its prompt, cut at 20,000 characters in all (`readProjectInstructions` in
+valbuild/val, `packages/ui/spa/proposals/proposalCode.ts`). There every file the
+assistant has to list, search for or open to find the code is a round trip the
+person waits through, so the file says where things are and how the common
+changes are made:
+
+- **A code map**, between `<!-- val:codemap:start -->` and
+  `<!-- val:codemap:end -->`: the pages and what each reads and renders, the
+  section types with their schema and component, the layout, the stylesheet
+  and tokens, the media libraries. Not a file tree: the Studio works that
+  out for any project at run time, and this is what only a template knows. `node scripts/codemap.mjs` writes it from the
+  template's files, and `--check` (in CI) fails when it is no longer what they
+  say. Nothing that serves MCP is in it, so it stays true in a project that
+  declined MCP; `npm create @valbuild` cuts only `val:mcp` regions and leaves
+  this one.
+- **Recipes**, hand-written: every file to touch, in order, for adding a
+  section, a field, a page, a theme token, a media field. `--check` fails a
+  path they name that does not exist; a file yet to be made is written with a
+  placeholder (`src/routes/_site.<name>.tsx`).
+
+The map comes first and the recipes second, so a cut — a project's own
+additions share the budget — loses the conventions last read, not the map.
+`--check` also fails a file over 12,000 characters.
+
+The script is not shipped with the templates. The map says it describes the
+project as it was created and that the files win where they differ: it cannot
+be regenerated where it is read most (the Studio's tools run in a browser tab),
+it reads `catalog.json`, which a project does not have, and its rules are this
+repository's conventions, which a project that has diverged no longer follows.
+The Studio's own run-time project map is what stays true there.
+
+`CLAUDE.md` in a template is one sentence and the `@AGENTS.md` include that
+Claude Code follows. The Studio does not follow includes, so the sentence is
+what keeps that file from reading as a bare, unexplained line in its prompt.
 
 ## The mirrors, and what admin.val.build/new seeds from
 

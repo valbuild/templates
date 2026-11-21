@@ -4,112 +4,140 @@ A [Val Build](https://val.build) site on [TanStack Start](https://tanstack.com/s
 (React). Content lives in `*.val.ts` files in this repository and is edited
 either here or in Val Studio at `/val`.
 
-## Where content lives
+<!-- val:codemap:start -->
 
-- `val.config.ts` — the Val instance: `s` (schemas), `c` (`c.define`), `val`
-  (helpers), `tanstackRouter`.
-- `val.modules.ts` — **every module has to be registered here.** A module that
-  is not in this list does not exist as far as the Studio is concerned.
-- `settings.val.ts` — the project's settings (`s.settings()`): the assistant,
-  the Studio's colours and logo, the languages the site is in. `{}` to start;
-  editors fill it in under Settings in the Studio.
-- `src/routes/*.val.ts` — a page's content. Named after the route file it sits
-  beside, and its keys are the URLs that route serves.
-- `src/components/**/*.val.ts` — the schemas of the components a page is built
-  from.
-- `src/media/*.val.ts` — the media libraries: every image (`images.val.ts`),
-  video (`videos.val.ts`), downloadable file (`files.val.ts`), icon and custom
-  font. A field never holds an upload of its own; it picks from a library with
-  `s.image(imagesVal)`, `s.video(videosVal)` or `s.file(filesVal)`, and stores
-  only `{ path }` — the size, type and default alt text are the library's. See
-  [src/media/README.md](src/media/README.md).
+## Code map
 
-## Reading content
+This project as it was created from its template. Where a file has since moved, the files are right: correct the line in the same change.
 
-Use the hooks from `src/val/val.hooks.ts` (`useVal`, `useValRoute`). They work
-during server rendering and in the browser, and content read through them is
-click-to-editable in the Studio.
+**Pages** — URL, route file, the content it reads, what it renders. A bare name is in `src/routes/`:
 
-Read on the server — `src/val/val.server.ts` — only when the content has to
-exist before the component does: `head` metadata, a redirect, a `notFound()`
-that must happen during the request. When you do, it **must** go through
-`createServerFn`; a route `loader` runs in the browser too, so importing
-`val.server` into one puts Node's `fs` in the client bundle.
-`src/routes/_site.docs.$.tsx` is the worked example.
+- `/docs/$` — `_site.docs.$.tsx` · reads `_site.docs.$.val.ts` (`docPageSchema` from `src/components/docs/doc.val.ts`; `docsLinkProblems` from `src/components/docs/docsOrder.val.ts`) · renders `src/components/docs/DocBlocks.tsx`, `src/components/docs/DocsPager.tsx`
+- `/docs` — `_site.docs.index.tsx` · reads `_site.docs.index.val.ts`
+- `/` — `_site.index.tsx` · reads `_site.index.val.ts` (`anySection` from `src/components/sections/anySection.val.ts`) · renders `src/components/sections/AnySection.tsx`
+- `/styleguide` — `_site.styleguide.tsx` · renders `src/styleguide/Styleguide.tsx`
+
+Val Studio's own, leave alone: `src/routes/__root.tsx`, `src/routes/api/val.$.ts`, `src/routes/val/`. `src/routeTree.gen.ts` is written by the build: never edit it.
+
+**Layout**:
+
+- `src/routes/_site.docs.tsx` — around every page under `/docs`: renders `Container`, `DocsSidebar`
+- `src/routes/_site.tsx` — around every page: renders `Footer`, `Header`
+- `src/components/Footer.tsx` — the footer's text
+- `src/components/Header.tsx` — the site's name and navigation
+
+**Section types** — `anySection` in `src/components/sections/anySection.val.ts`, rendered by `src/components/sections/AnySection.tsx`. Each `type`, its schema → its component, in `src/components/sections/`:
+
+- `hero` — `heroSection.val.ts` → `HeroSection.tsx`
+- `title-text` — `titleTextSection.val.ts` → `TitleTextSection.tsx`
+- `image-text` — `imageTextSection.val.ts` → `ImageTextSection.tsx`
+- `card-grid` — `cardGridSection.val.ts` → `CardGridSection.tsx`
+- `media-carousel` — `mediaCarouselSection.val.ts` → `MediaCarouselSection.tsx`
+- `accordion` — `accordionSection.val.ts` → `AccordionSection.tsx`
+
+**Block types** — `docBlock` in `src/components/docs/doc.val.ts`: `text`, `code`, `callout`, each written in the union, rendered by `src/components/docs/DocBlocks.tsx`.
+
+**Styles**:
+
+- `src/styles.css` — the site's stylesheet; imports tailwindcss and `src/theme/theme.css`
+- Tailwind tokens: colours (`bg-*`, `text-*`, `border-*`) `bg` `fg` `fg-muted` `border` `subtle` `link` `action` `on-action` `tint` `on-tint` `highlight` `highlight-tint` `on-highlight-tint` `raised`; `font-heading` `font-body`; `rounded-theme` `rounded-theme-lg`; spacing `section` `gap`
+
+**Content modules** (a file with `c.define`) not listed above: `settings.val.ts`, `src/theme/theme.val.ts`. Schemas only, not modules: `src/shared/meta.val.ts`.
+
+**Media libraries** in `src/media/`, and the field that picks from each: `images.val.ts` `s.image(imagesVal)`; `videos.val.ts` `s.video(videosVal)`; `files.val.ts` `s.file(filesVal)`; `icons.val.ts` `s.image(iconsVal)`; `fonts.val.ts` `s.font(fontsVal)`.
+
+<!-- val:codemap:end -->
+
+## How to make the common changes
+
+In Val Studio, a change to a `.val.ts` schema, a route or a dependency shows after a build, not in a quick preview. `<name>` is camelCase, `<Name>` PascalCase, `<kind>` kebab-case.
+
+### Add a docs block type
+
+1. `src/components/docs/doc.val.ts`: add `s.object({ type: s.literal("<kind>"), ... })` to `docBlock`, and a branch for it to the `.preview` on `blocks` in `docPageSchema`.
+2. `src/components/docs/<Name>.tsx`: the component, as `src/components/docs/Callout.tsx` is.
+3. `src/components/docs/DocBlocks.tsx`: import it and add its `block.type === "<kind>"` branch.
+
+The sidebar is `src/components/docs/DocsSidebar.tsx`.
+
+### Add a section type
+
+1. `src/components/sections/<name>Section.val.ts`: copy `titleTextSection.val.ts`. Export `<name>Section = s.object({ type: s.literal("<kind>"), surface: surfaceSchema, ... })` and `type <Name>SectionSchema = t.inferSchema<typeof <name>Section>`. To reuse: `...sectionHeaderFields` (eyebrow, title, intro; `sectionHeader.val.ts` beside it), `proseSchema` (`src/components/typography/prose.val.ts`), `linkButtonsSchema(max)` (`src/components/atoms/linkButton.val.ts`), `mediaSchema` (`src/components/atoms/media.val.ts`).
+2. `src/components/sections/<Name>Section.tsx`: `export function <Name>Section(props: <Name>SectionSchema)`, inside `<Section surface={surface}>`, built from `src/components/base/`, `atoms/` and `typography/`.
+3. `src/components/sections/anySection.val.ts`: import it, add it to the union and a `val.type === "<kind>"` branch to `sectionListPreview`.
+4. `src/components/sections/AnySection.tsx`: import the component, add its `section.type === "<kind>"` branch.
+5. To show one: `{ type: "<kind>", ... }` in `sections` in `src/routes/_site.index.val.ts`. Nothing goes in `val.modules.ts`.
+
+### Add a field to a section, or to any schema
+
+1. The schema file: add the field, `.nullable()` unless every existing entry is given a value.
+2. Every entry of it in the content (sections: `src/routes/_site.index.val.ts`; docs pages: `src/routes/_site.docs.$.val.ts`): add the key (`null` if nullable). A section's fields are also props where `src/components/sections/Sections.stories.tsx` renders it.
+3. The component: read the prop and render it.
+
+### Add a page
+
+1. `src/routes/_site.<name>.tsx`: copy `src/routes/_site.index.tsx`; the route id becomes `createFileRoute("/_site/<name>")` and the import `./_site.<name>.val`.
+2. `src/routes/_site.<name>.val.ts`: copy `src/routes/_site.index.val.ts`; `c.define`'s first argument becomes `"/src/routes/_site.<name>.val.ts"` and the one key `"/<name>"`.
+3. `val.modules.ts`: add `{ def: () => import("./src/routes/_site.<name>.val") },`.
+4. `src/components/Header.tsx`: a `<Link to="/<name>">` in the `<nav>`, if it belongs in the navigation.
+
+A new route needs a build; the build rewrites `src/routeTree.gen.ts` (locally, `npm run dev` does). A docs page is not a route: see The docs.
+
+### Change the header or footer
+
+`src/components/Header.tsx` (the first link is the site's name, then the `<nav>`) and `src/components/Footer.tsx`. To let editors change their text, move it into a content module (`src/content/<name>.val.ts`, registered in `val.modules.ts`) and read it with `useVal`.
+
+### Restyle: bigger, tighter, another colour
+
+- Site-wide it is content, not code: a value in `src/theme/theme.val.ts` (`colors.brand`, `typography.scale`, `base.density`, `base.radius`, `atoms.button.shape`…).
+- One component: its Tailwind classes, in its file. Heading sizes: `SIZE` in `src/components/typography/Heading.tsx`.
+- `SCALE_RATIO`, `RADIUS`, `DENSITY` in `src/theme/themeCss.ts` are what a scale step, radius or density is. Button, link and card rules: `src/theme/theme.css`. Another font: the top of `src/theme/fonts.ts` says how.
+
+### Add a theme token
+
+- A colour: `src/theme/surfaces.ts` (in `SurfaceToken`, `DEFAULT`, and `inverse` and `brand` of `SURFACES`; in `TEXT_PAIRS` if text is drawn in it), then `--color-<token>: var(--<token>);` in `@theme inline` in `src/theme/theme.css`, which makes `bg-<token>` and `text-<token>`. Run `pnpm test`.
+- A choice for editors, in order: `src/theme/theme.val.ts` (nullable in `themeSchema`, `null` in the content), `src/theme/types.ts` (`Theme`), `src/theme/resolveTheme.ts` (`ThemeInput`; `resolveTheme` as `input ?? preset`), `src/theme/presets.ts` (every preset), `src/theme/themeCss.ts` (`themeVariables`, or `themeAttributes`), then use `var(--<name>)`.
+
+### Add an image, video or file field
+
+1. Schema: `image: s.image(imagesVal).nullable()`, with `import imagesVal from "../../media/images.val"` (the other kinds: Media libraries, above; `mediaSchema` is an image or a video).
+2. Content: `null`, or `{ path: "/public/val/images/<file>" }` for a key already in `src/media/images.val.ts`: a field stores only the path, the rest is the library's (`src/media/README.md`). An editor uploads new files in the Studio.
+3. Component: `<Media media={{ type: "image", image }} />` from `src/components/atoms/Media.tsx`.
 
 ## Rules that are not obvious
 
-- `export default c.define(...)` must be written inline. Assigning to a const
-  and exporting that validates fine and then fails at publish time.
-- The first argument to `c.define` is the module's own path from the repository
-  root, starting with `/`. It has to match the file exactly.
-- Route modules are named after their route file: `posts.$postId.tsx` is served
-  by `posts.$postId.val.ts`. `.` and `/` both separate segments, `$param` is a
-  parameter, `$` is a splat, and `index`, `route`, `(groups)` and `_pathless`
-  layouts add no URL segment.
-- `*.val.ts` files under `src/routes` are excluded from the route generator by
-  `routeFileIgnorePattern` in `vite.config.ts` and `tsr.config.json`. Adding a
-  content file needs no change there; removing that setting breaks the build.
-- Every page of the site goes under the `_site` layout. `__root.tsx` is the
-  shell for `/val` too, so nothing site-specific belongs in it.
-- `.env.development` turns on content analytics under `npm run dev`, so the
-  browser console warns about content whose invisible edit tag left React (a
-  `<title>`, JSON-LD, a share link). Fix it with `val.raw()` where the value
-  leaves React, not by turning analytics off. On Val's hosting, analytics is
-  switched on in the project's settings.
-- Run `npm run validate` after changing content. It type-checks the content
-  against the schemas and fixes what it can.
+- **Every content module is registered in `val.modules.ts`**, or the Studio does not know it.
+- `export default c.define(...)` is written inline: assigned to a const first, it validates and then fails at publish time. Its first argument is the module's own path from the repository root, starting with `/`.
+- A route's content is named after its route file (`.tsx` becomes `.val.ts`) and keyed by the URLs it serves. `.` and `/` separate segments, `$param` is a parameter, `$` a splat; `index`, `route`, `(groups)` and `_pathless` layouts add no segment.
+- Leave `routeFileIgnorePattern` in `vite.config.ts` and `tsr.config.json`: it keeps `*.val.ts` out of the routes.
+- Every page goes under the `_site` layout. `__root.tsx` is the shell for `/val` too: nothing site-specific goes in it.
+- Read content with `useVal` / `useValRoute` from `src/val/val.hooks.ts`: on the server and in the browser, click-to-editable. Read on the server (`src/val/val.server.ts`) only what must exist before the component does (`head`, a redirect, `notFound()`), and only **through `createServerFn`**: a `loader` runs in the browser too, and `val.server` would put Node's `fs` in the client bundle. `src/routes/_site.docs.$.tsx` shows how.
+- Strings read through Val carry an invisible edit tag: use `val.raw()` wherever one must be exact (a URL, a `key`, a comparison, `<title>`). Locally, the browser console warns when a tag leaves React (`.env.development`): fix it with `val.raw()`.
+- `settings.val.ts` (`s.settings()`) is filled in by editors in the Studio. Keep its content a plain object literal.
+- Working locally, run `npm run validate` after changing content: it checks the content against the schemas and fixes what it can.
 
 ## The docs
 
-- A page is an entry of `src/routes/_site.docs.$.val.ts`, keyed by its URL
-  (`/docs/...`, any depth); its schema is `src/components/docs/doc.val.ts`.
-- The sidebar and Previous / Next are worked out by `docsOrder` in
-  `src/components/docs/docsOrder.val.ts`, from each page's `group` and `next`.
-  Previous is never stored. Do not add an order number or a nav module: the
-  links are the order.
-- `docsLinkProblems` is the module's validation: a page that is its own next,
-  two pages with the same next, and cycles. Keep it and `docsOrder` agreeing,
-  and run `pnpm test` after changing either.
-- Read the order with `useDocs()`, which works on `val.raw` values — what the
-  hooks return carries invisible edit tags.
-- Code blocks render `val.raw(code)` with `val.attrs`, so a copied snippet has
-  no edit tags in it. Keep it that way.
+- Adding a docs page is content only: an entry of `src/routes/_site.docs.$.val.ts`, keyed by its URL (`/docs/...`, any depth), with a `group`, and the page before it pointing at it with `next`.
+- The sidebar and Previous / Next are worked out by `docsOrder` in `src/components/docs/docsOrder.val.ts` from each page's `group` and `next`. Do not store Previous, an order number or a nav module: the links are the order.
+- `docsLinkProblems` validates the links (self, shared and circular `next`). Keep it and `docsOrder` agreeing, and run `pnpm test` after changing either.
+- Read the order with `useDocs()` (`src/components/docs/useDocs.ts`), which works on `val.raw` values.
+- Code blocks render `val.raw(code)` with `val.attrs`, so a copied snippet has no edit tags in it. Keep it that way.
 
-## Architecture
+## Architecture and theme
 
-The components follow **TABS** — Typography, Atoms, Base, Sections. See
-[src/components/README.md](src/components/README.md). Pages compose Sections and
-nothing else.
+**TABS**: Typography, Atoms, Base, Sections (`src/components/README.md`). **Pages compose Sections and nothing else**; a section composes the three layers under it.
 
-## The theme
+How the site looks is content: an editor picks a preset in `src/theme/theme.val.ts` and overrides single choices, and `src/routes/_site.tsx` renders the result as CSS variables.
 
-How the site looks is content: `src/theme/theme.val.ts`. An editor picks a
-preset (`src/theme/presets.ts`) and overrides single choices — colours, fonts,
-button shape, density. `resolveTheme` fills the gaps from the preset and
-`themeCss` turns the result into CSS variables, which `_site.tsx` renders.
-
-- **Components read tokens, never colours.** Use `bg-bg`, `text-fg`,
-  `text-fg-muted`, `border-border`, `bg-subtle`, `text-link`, `bg-action`,
-  `font-heading`, `rounded-theme`… (the list is `@theme inline` in
-  `src/theme/theme.css`). A literal colour will be wrong in dark mode or on a
-  brand section.
-- **Backgrounds are surfaces.** A section sets `data-surface` (`default`,
-  `muted`, `brand`, `inverse`) and everything inside follows. The surfaces are
-  defined in `src/theme/surfaces.ts`, and `pnpm test` checks that every text
-  colour on every surface clears WCAG AA for any brand colour. Run it after
-  changing a surface or a ramp.
-- **Nothing here imports the framework.** Router links and Val's renderers come
-  from `src/framework.tsx`.
-- `/styleguide` and `pnpm storybook` show every component under the theme.
+- **Components read tokens, never colours**: a literal colour is wrong in dark mode or on a brand section.
+- **Backgrounds are surfaces.** A section sets `data-surface` (`default`, `muted`, `brand`, `inverse`) and everything inside follows. `pnpm test` checks their contrast: run it after changing a surface or a ramp.
+- **Components never import the framework**: router links and Val's renderers come from `src/framework.tsx`.
 
 <!-- val:mcp:start -->
 
 ## Content tools (MCP)
 
-Val's content tools are served over MCP at `/api/mcp` (`src/routes/api/mcp.ts`,
-`src/val/mcp.server.ts`). In local development an agent can read, validate and edit
-content there; a production build refuses unless the project is connected to
-Val Build and OAuth is configured — see README.md.
+Val's content tools are served over MCP at `/api/mcp` (`src/routes/api/mcp.ts`, `src/val/mcp.server.ts`): open to an agent in local development, refused in production unless the project is connected to Val Build and OAuth is configured. See README.md.
 
 <!-- val:mcp:end -->
