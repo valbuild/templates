@@ -18,11 +18,11 @@ edited either here or in Val Studio at `/val`.
 
 ## Code map
 
-Where things are in this project as it was created from its template. If a file named here has moved, the files are right: correct the line in the same change.
+This project as it was created from its template. Where a file has since moved, the files are right: correct the line in the same change.
 
-**Pages** — URL, route file, the content it reads, what it renders:
+**Pages** — URL, route file, the content it reads, what it renders. A bare name is in `src/app/(main)/`:
 
-- `/` — `src/app/(main)/page.tsx` · reads `src/content/home.val.ts`
+- `/` — `page.tsx` · reads `src/content/home.val.ts`
 
 Val Studio's own, leave alone: `src/app/(val)/`, `src/app/ValModulesClient.tsx`.
 
@@ -71,7 +71,6 @@ Delete `src/app/(main)/page.tsx` and `src/content/home.val.ts`, and remove the
 
 ## Rules that are not obvious
 
-- `val.config.ts` exports `s` (schemas), `c` (`c.define`), `val` (helpers) and `nextAppRouter`.
 - **Every content module is registered in `val.modules.ts`**, or the Studio does not know it.
 - `export default c.define(...)` is written inline: assigned to a const first, it validates and then fails at publish time. Its first argument is the module's own path from the repository root, starting with `/`.
 - A router module sits beside the `page.tsx` it serves, and is keyed by the URLs that page serves.
@@ -88,9 +87,6 @@ Delete `src/app/(main)/page.tsx` and `src/content/home.val.ts`, and remove the
 
 ## Content tools (MCP)
 
-Val's content tools are served over MCP at `/api/mcp` (`src/app/api/mcp/route.ts`,
-`src/val/mcp.ts`). In local development an agent can read, validate and edit
-content there; a production build refuses unless the project is connected to
-Val Build and OAuth is configured — see README.md.
+Val's content tools are served over MCP at `/api/mcp` (`src/app/api/mcp/route.ts`, `src/val/mcp.ts`): open to an agent in local development, refused in production unless the project is connected to Val Build and OAuth is configured. See README.md.
 
 <!-- val:mcp:end -->

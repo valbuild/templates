@@ -141,8 +141,9 @@ changes are made:
 
 - **A code map**, between `<!-- val:codemap:start -->` and
   `<!-- val:codemap:end -->`: the pages and what each reads and renders, the
-  section types with their schema and component, the layout, the styles and
-  tokens, the media libraries. `node scripts/codemap.mjs` writes it from the
+  section types with their schema and component, the layout, the stylesheet
+  and tokens, the media libraries. Not a file tree: the Studio works that
+  out for any project at run time, and this is what only a template knows. `node scripts/codemap.mjs` writes it from the
   template's files, and `--check` (in CI) fails when it is no longer what they
   say. Nothing that serves MCP is in it, so it stays true in a project that
   declined MCP; `npm create @valbuild` cuts only `val:mcp` regions and leaves
@@ -154,7 +155,7 @@ changes are made:
 
 The map comes first and the recipes second, so a cut — a project's own
 additions share the budget — loses the conventions last read, not the map.
-`--check` also fails a file over 13,500 characters; aim under 12,000.
+`--check` also fails a file over 12,000 characters.
 
 The script is not shipped with the templates. The map says it describes the
 project as it was created and that the files win where they differ: it cannot

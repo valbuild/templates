@@ -9,11 +9,11 @@ either here or in Val Studio at `/val`.
 
 ## Code map
 
-Where things are in this project as it was created from its template. If a file named here has moved, the files are right: correct the line in the same change.
+This project as it was created from its template. Where a file has since moved, the files are right: correct the line in the same change.
 
-**Pages** — URL, route file, the content it reads, what it renders:
+**Pages** — URL, route file, the content it reads, what it renders. A bare name is in `src/routes/`:
 
-- `/` — `src/routes/_site.index.tsx` · reads `src/content/home.val.ts`
+- `/` — `_site.index.tsx` · reads `src/content/home.val.ts`
 
 Val Studio's own, leave alone: `src/routes/__root.tsx`, `src/routes/api/val.$.ts`, `src/routes/val/`. `src/routeTree.gen.ts` is written by the build: never edit it.
 
@@ -62,14 +62,13 @@ the `home.val` line from `val.modules.ts`. Everything left is Val's own setup.
 
 ## Rules that are not obvious
 
-- `val.config.ts` exports `s` (schemas), `c` (`c.define`), `val` (helpers) and `tanstackRouter`.
 - **Every content module is registered in `val.modules.ts`**, or the Studio does not know it.
 - `export default c.define(...)` is written inline: assigned to a const first, it validates and then fails at publish time. Its first argument is the module's own path from the repository root, starting with `/`.
 - A route's content is named after its route file (`.tsx` becomes `.val.ts`) and keyed by the URLs it serves. `.` and `/` separate segments, `$param` is a parameter, `$` a splat; `index`, `route`, `(groups)` and `_pathless` layouts add no segment.
-- `routeFileIgnorePattern` in `vite.config.ts` and `tsr.config.json` keeps `*.val.ts` out of the route generator. Leave it.
+- Leave `routeFileIgnorePattern` in `vite.config.ts` and `tsr.config.json`: it keeps `*.val.ts` out of the routes.
 - Every page goes under the `_site` layout. `__root.tsx` is the shell for `/val` too: nothing site-specific goes in it.
 - Read content with `useVal` / `useValRoute` from `src/val/val.hooks.ts`: on the server and in the browser, click-to-editable. Read on the server (`src/val/val.server.ts`) only what must exist before the component does (`head`, a redirect, `notFound()`), and only **through `createServerFn`**: a `loader` runs in the browser too, and `val.server` would put Node's `fs` in the client bundle.
-- Strings read through Val carry an invisible edit tag: use `val.raw()` wherever one must be exact (a URL, a `key`, a comparison, `<title>`). `.env.development` turns on analytics that warn in the browser console when a tag leaves React; fix that with `val.raw()`, not by turning them off.
+- Strings read through Val carry an invisible edit tag: use `val.raw()` wherever one must be exact (a URL, a `key`, a comparison, `<title>`). Locally, the browser console warns when a tag leaves React (`.env.development`): fix it with `val.raw()`.
 - `settings.val.ts` (`s.settings()`) is filled in by editors in the Studio. Keep its content a plain object literal.
 - There is no CSS framework, no component library and no media library: bring what you prefer.
 - Working locally, run `npm run validate` after changing content: it checks the content against the schemas and fixes what it can.
@@ -78,9 +77,6 @@ the `home.val` line from `val.modules.ts`. Everything left is Val's own setup.
 
 ## Content tools (MCP)
 
-Val's content tools are served over MCP at `/api/mcp` (`src/routes/api/mcp.ts`,
-`src/val/mcp.server.ts`). In local development an agent can read, validate and edit
-content there; a production build refuses unless the project is connected to
-Val Build and OAuth is configured — see README.md.
+Val's content tools are served over MCP at `/api/mcp` (`src/routes/api/mcp.ts`, `src/val/mcp.server.ts`): open to an agent in local development, refused in production unless the project is connected to Val Build and OAuth is configured. See README.md.
 
 <!-- val:mcp:end -->

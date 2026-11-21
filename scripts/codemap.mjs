@@ -49,10 +49,9 @@ const START = "<!-- val:codemap:start -->";
 const END = "<!-- val:codemap:end -->";
 /*
  * The Studio cuts a project's instructions at 20,000 characters, and a
- * project's own additions and its CLAUDE.md come out of the same budget. Aim
- * under 12,000; this is where the check stops a file that keeps growing.
+ * project's own additions and its CLAUDE.md come out of the same budget.
  */
-const MAX_AGENTS_CHARS = 13_500;
+const MAX_AGENTS_CHARS = 12_000;
 
 const IGNORED_DIRS = new Set([
   "node_modules",
@@ -71,8 +70,6 @@ const CODE_EXTENSIONS = [".ts", ".tsx"];
 const NOTES = {
   "src/components/Header.tsx": "the site's name and navigation",
   "src/components/Footer.tsx": "the footer's text",
-  "src/components/ThemeToggle.tsx": "the light/dark switch in the header",
-  "src/components/NotFound.tsx": "what a missing page shows",
 };
 
 /** The field a library's entries are picked with. */
@@ -375,13 +372,15 @@ function generate(project) {
     /^src\/components\/(typography|atoms|base)\//.test(file);
 
   /* Pages ------------------------------------------------------------- */
+  const routesDir =
+    template.framework === "tanstack" ? "src/routes" : "src/app/(main)";
   const contentSeen = new Set();
   const pageLine = (route) => {
     const imports = importsOf(route.file);
     const content = imports.filter(
       (entry) => isVal(entry.target) && entry.default !== null,
     );
-    const parts = [`${code(route.url)} — ${code(route.file)}`];
+    const parts = [`${code(route.url)} — ${within(routesDir, route.file)}`];
     const reads = [];
     for (const entry of content) {
       // What the content module's schema is made of: the component schemas
@@ -404,7 +403,7 @@ function generate(project) {
       const first = !contentSeen.has(entry.target);
       contentSeen.add(entry.target);
       reads.push(
-        code(entry.target) +
+        within(routesDir, entry.target) +
           (first && schemas.length > 0 ? ` (${schemas.join("; ")})` : ""),
       );
     }
@@ -428,7 +427,7 @@ function generate(project) {
   const studio = routes.filter((route) => route.studio);
 
   lines.push(
-    "**Pages** — URL, route file, the content it reads, what it renders:",
+    `**Pages** — URL, route file, the content it reads, what it renders. A bare name is in ${code(`${routesDir}/`)}:`,
     "",
   );
   for (const route of sitePages) lines.push(pageLine(route));
@@ -481,26 +480,28 @@ function generate(project) {
     );
   }
   for (const file of topLevelComponents) {
+    // The rest say what they are in their names.
+    if (!(file in NOTES)) continue;
     const readsContent = importsOf(file).some((entry) => isVal(entry.target));
     lines.push(
       `- ${code(file)}${note(file)}` +
         (/\/(Header|Footer)\.tsx$/.test(file)
           ? readsContent
             ? " (reads a content module)"
-            : " (in its JSX, not content)"
+            : ""
           : ""),
     );
   }
   lines.push("");
 
   /* Sections ---------------------------------------------------------- */
-  const listed = new Set();
   const described = new Set();
   const named = unions
     .filter((union) => union.members.some((member) => !member.inline))
     .sort(
       (a, b) =>
-        a.members.length - b.members.length || a.name.localeCompare(b.name),
+        a.members.length - b.members.length ||
+        (a.name < b.name ? -1 : a.name > b.name ? 1 : 0),
     );
   const inline = unions.filter(
     (union) =>
@@ -508,8 +509,6 @@ function generate(project) {
   );
   for (const union of named) {
     const dir = path.posix.dirname(union.file);
-    listed.add(union.file);
-    union.renderers.forEach((file) => listed.add(file));
     lines.push(
       `**Section types** — ${code(union.name)} in ${code(union.file)}` +
         (union.renderers.length > 0
@@ -529,8 +528,6 @@ function generate(project) {
         continue;
       }
       described.add(member.schemaFile);
-      listed.add(member.schemaFile);
-      member.components.forEach((file) => listed.add(file));
       const stem = baseName(member.schemaFile).replace(".val.ts", "");
       lines.push(
         `- ${code(member.literal)} — ${within(dir, member.schemaFile)}` +
@@ -556,52 +553,6 @@ function generate(project) {
           ? `, rendered by ${union.renderers.map(code).join(", ")}`
           : "") +
         ".",
-      "",
-    );
-    union.renderers.forEach((file) => listed.add(file));
-  }
-
-  /* Components -------------------------------------------------------- */
-  const componentDirs = [
-    ...new Set(
-      files
-        .map((file) => /^(src\/components\/[^/]+)\//.exec(file)?.[1])
-        .filter(Boolean),
-    ),
-  ];
-  const order = ["typography", "atoms", "base", "sections"];
-  const rank = (dir) => {
-    const index = order.indexOf(baseName(dir));
-    return index === -1 ? order.length : index;
-  };
-  componentDirs.sort((a, b) => rank(a) - rank(b) || a.localeCompare(b));
-  const rows = [];
-  for (const dir of componentDirs) {
-    const rest = files.filter(
-      (file) =>
-        file.startsWith(`${dir}/`) &&
-        /\.tsx?$/.test(file) &&
-        !isStory(file) &&
-        !isTest(file) &&
-        !listed.has(file),
-    );
-    if (rest.length === 0) continue;
-    const components = rest.filter((file) => file.endsWith(".tsx"));
-    const others = rest.filter((file) => !file.endsWith(".tsx"));
-    rows.push(
-      `- ${code(`${dir}/`)}: ${[
-        components.map(componentName).join(", "),
-        others.map(baseName).join(", "),
-      ]
-        .filter(Boolean)
-        .join("; ")}`,
-    );
-  }
-  if (rows.length > 0) {
-    lines.push(
-      "**Other components** (a name is its `.tsx` file):",
-      "",
-      ...rows,
       "",
     );
   }
@@ -699,8 +650,11 @@ function generate(project) {
       `${PICKERS[kind]}(${baseName(file).replace(".val.ts", "")}Val)`;
     lines.push(
       "",
-      `**Media libraries**, and the field that picks from each: ${media
-        .map((library) => `${code(library.file)} ${code(picker(library))}`)
+      `**Media libraries** in ${code("src/media/")}, and the field that picks from each: ${media
+        .map(
+          (library) =>
+            `${within("src/media", library.file)} ${code(picker(library))}`,
+        )
         .join("; ")}.`,
     );
   }
@@ -715,7 +669,7 @@ function generate(project) {
 
 const HEADING = "## Code map";
 const PREAMBLE =
-  "Where things are in this project as it was created from its template. If a file named here has moved, the files are right: correct the line in the same change.";
+  "This project as it was created from its template. Where a file has since moved, the files are right: correct the line in the same change.";
 
 function withMap(agents, map) {
   const start = agents.indexOf(START);
@@ -803,13 +757,39 @@ const catalog = JSON.parse(
   fs.readFileSync(path.join(ROOT, "catalog.json"), "utf8"),
 );
 
+const KNOWN_ARGS = new Set(["--check", "--print"]);
+const unknown = args.filter(
+  (arg, index) => !KNOWN_ARGS.has(arg) && args[index - 1] !== "--print",
+);
+if (unknown.length > 0 || (printIndex !== -1 && !args[printIndex + 1])) {
+  console.error(
+    "Usage: node scripts/codemap.mjs [--check | --print <template path>]",
+  );
+  process.exit(2);
+}
+
 const errors = [];
 const usedNotes = new Set();
+if (!Array.isArray(catalog.templates) || catalog.templates.length === 0) {
+  errors.push("catalog.json lists no templates: there is nothing to check.");
+}
 let written = 0;
 for (const template of catalog.templates) {
   const mcp = template.features?.mcp?.paths ?? [];
   const project = loadTemplate(template, mcp);
   const { text: map, usedNotes: used } = generate(project);
+  // A map the rules above could not read is worse than none: say so, rather
+  // than write `null` or an empty list into a prompt.
+  if (!/^- `\/` — /m.test(map)) {
+    errors.push(
+      `${template.path}: no route serves "/": the routes were not read`,
+    );
+  }
+  if (/`(null|undefined)`|: \.$/m.test(map)) {
+    errors.push(
+      `${template.path}: the map has a value that could not be read (\`null\`). scripts/codemap.mjs needs to learn how this template writes it.`,
+    );
+  }
   used.forEach((file) => usedNotes.add(file));
   if (printIndex !== -1) {
     if (args[printIndex + 1] === template.path) console.log(map);
@@ -817,7 +797,8 @@ for (const template of catalog.templates) {
   }
   const agentsPath = path.join(project.dir, "AGENTS.md");
   const where = `${template.path}/AGENTS.md`;
-  const agents = fs.readFileSync(agentsPath, "utf8");
+  // A checkout with CRLF line endings is the same file.
+  const agents = fs.readFileSync(agentsPath, "utf8").replaceAll("\r\n", "\n");
   const next = withMap(agents, map);
   if (next === null) {
     errors.push(`${where}: needs exactly one ${START}, then one ${END}`);
