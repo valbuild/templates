@@ -71,11 +71,6 @@ cd ../.. && node scripts/sync.mjs --pull tanstack/full && node scripts/sync.mjs
 
 `node scripts/sync.mjs --check` is what CI runs.
 
-> **CI is not switched on yet.** The workflow is in `ci/check.yml` because
-> the session that created this repository could not push to
-> `.github/workflows/`. Move it there (`git mv ci/check.yml
-.github/workflows/check.yml`) to turn it on.
-
 ### What is shared, and what is not
 
 Shared code is the same file in every template. Everything a component needs
@@ -262,8 +257,7 @@ asks instead.
    fastest), with its own `src/framework.tsx`.
 2. List the shared paths it uses in `templates.json` and run
    `node scripts/sync.mjs`.
-3. Add a job for it to the CI workflow (`ci/check.yml` until it is moved to
-   `.github/workflows/`).
+3. Add a job for it to the CI workflow (`.github/workflows/check.yml`).
 4. Add it to `catalog.json`, with an icon and screenshots in `catalog/`, and
    run `node scripts/catalog.mjs --check`. That is all `npm create @valbuild`
    needs to offer it.
